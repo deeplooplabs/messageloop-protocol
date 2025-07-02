@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package messageloop.client.v1;
+
+option go_package = "github.com/deeploop-dev/messageloop-protocol/gen/proto/go/client/v1;clientpb";
+
+import "shared/v1/errors.proto";
+
+service MessageLoopService {
+  // 核心双向数据流
+  rpc MessageLoop(stream ClientMessage) returns (stream ServerMessage);
+}
+
+message ClientMessage {
+  string id = 1;
+  map<string, string> headers = 2;
+  oneof body {
+    Subscribe subscribe = 3;
+    Unsubscribe unsubscribe = 4;
+    RPCRequest rpc_request = 5;
+    Ping ping = 6;
+    Publish publish = 7;
+    SubRefresh sub_refresh = 8;
+  }
+}
+
+message ServerMessage {
+  string id = 1;
+  map<string, string> headers = 2;
+  oneof body {
+    messageloop.shared.v1.Error error = 3;
+    Connected connected = 4;
+    SubscribeAck subscribe_ack = 5;
+    UnsubscribeAck unsubscribe_ack = 6;
+    RPCReply rpc_reply = 7;
+    Pong pong = 8;
+    PublishAck publish_ack = 9;
+    Publication publication = 10;
+    SubRefreshAck sub_refresh_ack = 11;
+  }
+}
+
+message RPCRequest {
+  string channel = 1;
+  string method = 2;
+  map<string, string> metadata = 3;
+  bytes payload = 4;
+  string payload_json = 5;
+}
+
+message RPCReply {
+  messageloop.shared.v1.Error error = 1;
+  bytes payload = 2;
+  string payload_json = 3;
+}
+
+message Message {
+  string id = 1;
+  string channel = 2;
+  uint64 offset = 3;
+  bytes payload = 4;
+  string payload_json = 5;
+}
+
+message Publication {
+  repeated Message messages = 3;
+}
+
+message Connected {
+  string session_id = 1;
+  repeated Subscription subscriptions = 2;
+  repeated Publication publications = 3;
+}
+
+message Subscription {
+  string channel = 1;
+  //  string token = 3;
+}
+
+message Subscribe {
+  message Subscription {
+    string channel = 1;
+    string token = 2;
+  }
+  repeated Subscription subscriptions = 1;
+}
+
+message SubscribeAck {
+  message Subscription {
+    string id = 1;
+    string channel = 2;
+  }
+
+  repeated Subscription subscriptions = 1;
+}
+
+message Unsubscribe {
+  message Subscription {
+    string channel = 1;
+  }
+
+  repeated Subscription subscriptions = 1;
+}
+
+message UnsubscribeAck {
+
+  message Subscription {
+    string channel = 1;
+  }
+
+  repeated Subscription subscriptions = 1;
+}
+
+message RefreshSub {
+  message Subscription {
+    string channel = 1;
+    string token = 2;
+  }
+
+  repeated Subscription subscriptions = 1;
+}
+
+message Ping {
+}
+
+message Pong {
+}
+
+message Publish {
+  string channel = 1;
+  bytes payload = 2;
+  string payload_json = 3;
+}
+
+message PublishAck {
+  string channel = 1;
+  uint64 offset = 2;
+}
+
+message SubRefresh {
+  repeated string channels = 1;
+}
+
+message SubRefreshAck {
+}
