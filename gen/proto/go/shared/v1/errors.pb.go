@@ -101,8 +101,8 @@ const file_shared_v1_errors_proto_rawDesc = "" +
 	"\bmetadata\x18\x04 \x03(\v2*.messageloop.shared.v1.Error.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xec\x01\n" +
-	"\x19com.messageloop.shared.v1B\vErrorsProtoP\x01ZLgithub.com/deeploopdev/messageloop-protocol/gen/proto/go/shared/v1;sharedv1\xa2\x02\x03MSX\xaa\x02\x15Messageloop.Shared.V1\xca\x02\x15Messageloop\\Shared\\V1\xe2\x02!Messageloop\\Shared\\V1\\GPBMetadata\xea\x02\x17Messageloop::Shared::V1b\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\xeb\x01\n" +
+	"\x19com.messageloop.shared.v1B\vErrorsProtoP\x01ZKgithub.com/deeploopdev/messageloop-protocol/gen/proto/go/shared/v1;sharedv1\xa2\x02\x03MSX\xaa\x02\x15Messageloop.Shared.V1\xca\x02\x15Messageloop\\Shared\\V1\xe2\x02!Messageloop\\Shared\\V1\\GPBMetadata\xea\x02\x17Messageloop::Shared::V1b\x06proto3"
 
 var (
 	file_shared_v1_errors_proto_rawDescOnce sync.Once
