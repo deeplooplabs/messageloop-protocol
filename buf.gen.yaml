@@ -3,7 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/deeploop-dev/messageloop-protocol/gen/proto/go
+      value: github.com/deeploopdev/messageloop-protocol/gen/proto/go
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen/proto/go

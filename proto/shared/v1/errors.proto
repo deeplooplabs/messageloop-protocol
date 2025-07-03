@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messageloop.shared.v1;
 
-option go_package = "github.com/deeploop-dev/messageloop-protocol/gen/proto/go/shared/v1;sharedpb";
+option go_package = "github.com/deeploopdev/messageloop-protocol/gen/proto/go/shared/v1;sharedpb";
 
 message Error {
   int32 code = 1;
