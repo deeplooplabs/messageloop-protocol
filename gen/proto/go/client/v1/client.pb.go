@@ -399,8 +399,8 @@ type RPCRequest struct {
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
 	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Payload       []byte                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,5,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -456,16 +456,16 @@ func (x *RPCRequest) GetMetadata() map[string]string {
 	return nil
 }
 
-func (x *RPCRequest) GetPayload() []byte {
+func (x *RPCRequest) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *RPCRequest) GetPayloadJson() string {
+func (x *RPCRequest) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -473,8 +473,8 @@ func (x *RPCRequest) GetPayloadJson() string {
 type RPCReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Error         *v1.Error              `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,3,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -516,16 +516,16 @@ func (x *RPCReply) GetError() *v1.Error {
 	return nil
 }
 
-func (x *RPCReply) GetPayload() []byte {
+func (x *RPCReply) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *RPCReply) GetPayloadJson() string {
+func (x *RPCReply) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -535,8 +535,8 @@ type Message struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
 	Offset        uint64                 `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,5,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -592,16 +592,16 @@ func (x *Message) GetOffset() uint64 {
 	return 0
 }
 
-func (x *Message) GetPayload() []byte {
+func (x *Message) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *Message) GetPayloadJson() string {
+func (x *Message) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -1049,8 +1049,8 @@ func (*Pong) Descriptor() ([]byte, []int) {
 type Publish struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,3,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1092,16 +1092,16 @@ func (x *Publish) GetChannel() string {
 	return ""
 }
 
-func (x *Publish) GetPayload() []byte {
+func (x *Publish) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *Publish) GetPayloadJson() string {
+func (x *Publish) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -1519,27 +1519,27 @@ const file_client_v1_client_proto_rawDesc = "" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x06\n" +
-	"\x04body\"\x85\x02\n" +
+	"\x04body\"\x94\x02\n" +
 	"\n" +
 	"RPCRequest\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +
 	"\x06method\x18\x02 \x01(\tR\x06method\x12K\n" +
-	"\bmetadata\x18\x03 \x03(\v2/.messageloop.client.v1.RPCRequest.MetadataEntryR\bmetadata\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x05 \x01(\tR\vpayloadJson\x1a;\n" +
+	"\bmetadata\x18\x03 \x03(\v2/.messageloop.client.v1.RPCRequest.MetadataEntryR\bmetadata\x12#\n" +
+	"\rpayload_bytes\x18\x04 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\rpayloadString\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"{\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8a\x01\n" +
 	"\bRPCReply\x122\n" +
-	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x03 \x01(\tR\vpayloadJson\"\x88\x01\n" +
+	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12#\n" +
+	"\rpayload_bytes\x18\x02 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x03 \x01(\tR\rpayloadString\"\x97\x01\n" +
 	"\aMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\achannel\x18\x02 \x01(\tR\achannel\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x05 \x01(\tR\vpayloadJson\"I\n" +
+	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12#\n" +
+	"\rpayload_bytes\x18\x04 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\rpayloadString\"I\n" +
 	"\vPublication\x12:\n" +
 	"\bmessages\x18\x03 \x03(\v2\x1e.messageloop.client.v1.MessageR\bmessages\"\xbd\x01\n" +
 	"\tConnected\x12\x1d\n" +
@@ -1574,11 +1574,11 @@ const file_client_v1_client_proto_rawDesc = "" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"\x06\n" +
 	"\x04Ping\"\x06\n" +
-	"\x04Pong\"`\n" +
+	"\x04Pong\"o\n" +
 	"\aPublish\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x03 \x01(\tR\vpayloadJson\">\n" +
+	"\achannel\x18\x01 \x01(\tR\achannel\x12#\n" +
+	"\rpayload_bytes\x18\x02 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x03 \x01(\tR\rpayloadString\">\n" +
 	"\n" +
 	"PublishAck\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +

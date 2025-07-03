@@ -44,22 +44,22 @@ message RPCRequest {
   string channel = 1;
   string method = 2;
   map<string, string> metadata = 3;
-  bytes payload = 4;
-  string payload_json = 5;
+  bytes payload_bytes = 4;
+  string payload_string = 5;
 }
 
 message RPCReply {
   messageloop.shared.v1.Error error = 1;
-  bytes payload = 2;
-  string payload_json = 3;
+  bytes payload_bytes = 2;
+  string payload_string = 3;
 }
 
 message Message {
   string id = 1;
   string channel = 2;
   uint64 offset = 3;
-  bytes payload = 4;
-  string payload_json = 5;
+  bytes payload_bytes = 4;
+  string payload_string = 5;
 }
 
 message Publication {
@@ -128,8 +128,8 @@ message Pong {
 
 message Publish {
   string channel = 1;
-  bytes payload = 2;
-  string payload_json = 3;
+  bytes payload_bytes = 2;
+  string payload_string = 3;
 }
 
 message PublishAck {

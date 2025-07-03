@@ -26,8 +26,8 @@ type Publication struct {
 	Id            string                   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Destination   *Publication_Destination `protobuf:"bytes,2,opt,name=destination,proto3" json:"destination,omitempty"`
 	Options       *Publication_Options     `protobuf:"bytes,3,opt,name=options,proto3" json:"options,omitempty"`
-	Payload       []byte                   `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                   `protobuf:"bytes,5,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                   `protobuf:"bytes,4,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                   `protobuf:"bytes,5,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,16 +83,16 @@ func (x *Publication) GetOptions() *Publication_Options {
 	return nil
 }
 
-func (x *Publication) GetPayload() []byte {
+func (x *Publication) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *Publication) GetPayloadJson() string {
+func (x *Publication) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -509,13 +509,13 @@ var File_server_v1_api_proto protoreflect.FileDescriptor
 
 const file_server_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"\x13server/v1/api.proto\x12\x15messageloop.server.v1\"\xe5\x02\n" +
+	"\x13server/v1/api.proto\x12\x15messageloop.server.v1\"\xf4\x02\n" +
 	"\vPublication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12P\n" +
 	"\vdestination\x18\x02 \x01(\v2..messageloop.server.v1.Publication.DestinationR\vdestination\x12D\n" +
-	"\aoptions\x18\x03 \x01(\v2*.messageloop.server.v1.Publication.OptionsR\aoptions\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x05 \x01(\tR\vpayloadJson\x1a*\n" +
+	"\aoptions\x18\x03 \x01(\v2*.messageloop.server.v1.Publication.OptionsR\aoptions\x12#\n" +
+	"\rpayload_bytes\x18\x04 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\rpayloadString\x1a*\n" +
 	"\aOptions\x12\x1f\n" +
 	"\vadd_history\x18\x01 \x01(\bR\n" +
 	"addHistory\x1aE\n" +

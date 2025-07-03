@@ -27,8 +27,8 @@ type RPCRequest struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,5,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,6,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,5,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,6,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -84,16 +84,16 @@ func (x *RPCRequest) GetMethod() string {
 	return ""
 }
 
-func (x *RPCRequest) GetPayload() []byte {
+func (x *RPCRequest) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *RPCRequest) GetPayloadJson() string {
+func (x *RPCRequest) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -102,8 +102,8 @@ type RPCReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Error         *v1.Error              `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,4,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,3,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,4,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -152,16 +152,16 @@ func (x *RPCReply) GetError() *v1.Error {
 	return nil
 }
 
-func (x *RPCReply) GetPayload() []byte {
+func (x *RPCReply) GetPayloadBytes() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadBytes
 	}
 	return nil
 }
 
-func (x *RPCReply) GetPayloadJson() string {
+func (x *RPCReply) GetPayloadString() string {
 	if x != nil {
-		return x.PayloadJson
+		return x.PayloadString
 	}
 	return ""
 }
@@ -774,19 +774,19 @@ var File_proxy_v1_proxy_proto protoreflect.FileDescriptor
 
 const file_proxy_v1_proxy_proto_rawDesc = "" +
 	"\n" +
-	"\x14proxy/v1/proxy.proto\x12\x14messageloop.proxy.v1\x1a\x16shared/v1/errors.proto\"\x8b\x01\n" +
+	"\x14proxy/v1/proxy.proto\x12\x14messageloop.proxy.v1\x1a\x16shared/v1/errors.proto\"\x9a\x01\n" +
 	"\n" +
 	"RPCRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\achannel\x18\x02 \x01(\tR\achannel\x12\x16\n" +
-	"\x06method\x18\x03 \x01(\tR\x06method\x12\x18\n" +
-	"\apayload\x18\x05 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x06 \x01(\tR\vpayloadJson\"\x8b\x01\n" +
+	"\x06method\x18\x03 \x01(\tR\x06method\x12#\n" +
+	"\rpayload_bytes\x18\x05 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x06 \x01(\tR\rpayloadString\"\x9a\x01\n" +
 	"\bRPCReply\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x122\n" +
-	"\x05error\x18\x02 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12\x18\n" +
-	"\apayload\x18\x03 \x01(\fR\apayload\x12!\n" +
-	"\fpayload_json\x18\x04 \x01(\tR\vpayloadJson\"\x8b\x01\n" +
+	"\x05error\x18\x02 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12#\n" +
+	"\rpayload_bytes\x18\x03 \x01(\fR\fpayloadBytes\x12%\n" +
+	"\x0epayload_string\x18\x04 \x01(\tR\rpayloadString\"\x8b\x01\n" +
 	"\x13AuthenticateRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1f\n" +

@@ -24,8 +24,8 @@ message Publication {
   string id = 1;
   Destination destination = 2;
   Options options = 3;
-  bytes payload = 4;
-  string payload_json = 5;
+  bytes payload_bytes = 4;
+  string payload_string = 5;
 }
 
 message PublishRequest {
