@@ -15,12 +15,13 @@ message ClientMessage {
   string id = 1;
   map<string, string> headers = 2;
   oneof body {
-    Subscribe subscribe = 3;
-    Unsubscribe unsubscribe = 4;
-    RPCRequest rpc_request = 5;
-    Ping ping = 6;
-    Publish publish = 7;
-    SubRefresh sub_refresh = 8;
+    Connect connect = 3;
+    Subscribe subscribe = 4;
+    Unsubscribe unsubscribe = 5;
+    RPCRequest rpc_request = 6 [json_name = "rpc_request"];
+    Ping ping = 7;
+    Publish publish = 8;
+    SubRefresh sub_refresh = 9 [json_name = "sub_refresh"];
   }
 }
 
@@ -30,36 +31,45 @@ message ServerMessage {
   oneof body {
     messageloop.shared.v1.Error error = 3;
     Connected connected = 4;
-    SubscribeAck subscribe_ack = 5;
-    UnsubscribeAck unsubscribe_ack = 6;
-    RPCReply rpc_reply = 7;
+    SubscribeAck subscribe_ack = 5 [json_name = "subscribe_ack"];
+    UnsubscribeAck unsubscribe_ack = 6 [json_name = "unsubscribe_ack"];
+    RPCReply rpc_reply = 7 [json_name = "rpc_reply"];
     Pong pong = 8;
-    PublishAck publish_ack = 9;
+    PublishAck publish_ack = 9 [json_name = "publish_ack"];
     Publication publication = 10;
-    SubRefreshAck sub_refresh_ack = 11;
+    SubRefreshAck sub_refresh_ack = 11 [json_name = "sub_refresh_ack"];
   }
+}
+
+message Connect {
+  string client_id = 1 [json_name = "client_id"];
+  string client_type = 2 [json_name = "client_type"];
+  string token = 3;
+  string version = 4;
+  repeated Subscription subscriptions = 5;
+  map<string, string> metadata = 6;
 }
 
 message RPCRequest {
   string channel = 1;
   string method = 2;
   map<string, string> metadata = 3;
-  bytes payload_bytes = 4;
-  string payload_string = 5;
+  bytes payload_bytes = 4 [json_name = "payload_bytes"];
+  string payload_string = 5 [json_name = "payload_string"];
 }
 
 message RPCReply {
   messageloop.shared.v1.Error error = 1;
-  bytes payload_bytes = 2;
-  string payload_string = 3;
+  bytes payload_bytes = 2 [json_name = "payload_bytes"];
+  string payload_string = 3 [json_name = "payload_string"];
 }
 
 message Message {
   string id = 1;
   string channel = 2;
   uint64 offset = 3;
-  bytes payload_bytes = 4;
-  string payload_string = 5;
+  bytes payload_bytes = 4 [json_name = "payload_bytes"];
+  string payload_string = 5 [json_name = "payload_string"];
 }
 
 message Publication {
@@ -67,56 +77,34 @@ message Publication {
 }
 
 message Connected {
-  string session_id = 1;
+  string session_id = 1 [json_name = "session_id"];
   repeated Subscription subscriptions = 2;
   repeated Publication publications = 3;
 }
 
 message Subscription {
   string channel = 1;
-  //  string token = 3;
+  bool ephemeral = 2;
+  string token = 3;
 }
 
 message Subscribe {
-  message Subscription {
-    string channel = 1;
-    string token = 2;
-  }
   repeated Subscription subscriptions = 1;
 }
 
 message SubscribeAck {
-  message Subscription {
-    string id = 1;
-    string channel = 2;
-  }
-
   repeated Subscription subscriptions = 1;
 }
 
 message Unsubscribe {
-  message Subscription {
-    string channel = 1;
-  }
-
   repeated Subscription subscriptions = 1;
 }
 
 message UnsubscribeAck {
-
-  message Subscription {
-    string channel = 1;
-  }
-
   repeated Subscription subscriptions = 1;
 }
 
 message RefreshSub {
-  message Subscription {
-    string channel = 1;
-    string token = 2;
-  }
-
   repeated Subscription subscriptions = 1;
 }
 
@@ -128,8 +116,8 @@ message Pong {
 
 message Publish {
   string channel = 1;
-  bytes payload_bytes = 2;
-  string payload_string = 3;
+  bytes payload_bytes = 2 [json_name = "payload_bytes"];
+  string payload_string = 3 [json_name = "payload_string"];
 }
 
 message PublishAck {

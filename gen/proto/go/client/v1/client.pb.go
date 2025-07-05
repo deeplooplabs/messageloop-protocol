@@ -28,6 +28,7 @@ type ClientMessage struct {
 	Headers map[string]string      `protobuf:"bytes,2,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Types that are valid to be assigned to Body:
 	//
+	//	*ClientMessage_Connect
 	//	*ClientMessage_Subscribe
 	//	*ClientMessage_Unsubscribe
 	//	*ClientMessage_RpcRequest
@@ -90,6 +91,15 @@ func (x *ClientMessage) GetBody() isClientMessage_Body {
 	return nil
 }
 
+func (x *ClientMessage) GetConnect() *Connect {
+	if x != nil {
+		if x, ok := x.Body.(*ClientMessage_Connect); ok {
+			return x.Connect
+		}
+	}
+	return nil
+}
+
 func (x *ClientMessage) GetSubscribe() *Subscribe {
 	if x != nil {
 		if x, ok := x.Body.(*ClientMessage_Subscribe); ok {
@@ -148,29 +158,35 @@ type isClientMessage_Body interface {
 	isClientMessage_Body()
 }
 
+type ClientMessage_Connect struct {
+	Connect *Connect `protobuf:"bytes,3,opt,name=connect,proto3,oneof"`
+}
+
 type ClientMessage_Subscribe struct {
-	Subscribe *Subscribe `protobuf:"bytes,3,opt,name=subscribe,proto3,oneof"`
+	Subscribe *Subscribe `protobuf:"bytes,4,opt,name=subscribe,proto3,oneof"`
 }
 
 type ClientMessage_Unsubscribe struct {
-	Unsubscribe *Unsubscribe `protobuf:"bytes,4,opt,name=unsubscribe,proto3,oneof"`
+	Unsubscribe *Unsubscribe `protobuf:"bytes,5,opt,name=unsubscribe,proto3,oneof"`
 }
 
 type ClientMessage_RpcRequest struct {
-	RpcRequest *RPCRequest `protobuf:"bytes,5,opt,name=rpc_request,json=rpcRequest,proto3,oneof"`
+	RpcRequest *RPCRequest `protobuf:"bytes,6,opt,name=rpc_request,proto3,oneof"`
 }
 
 type ClientMessage_Ping struct {
-	Ping *Ping `protobuf:"bytes,6,opt,name=ping,proto3,oneof"`
+	Ping *Ping `protobuf:"bytes,7,opt,name=ping,proto3,oneof"`
 }
 
 type ClientMessage_Publish struct {
-	Publish *Publish `protobuf:"bytes,7,opt,name=publish,proto3,oneof"`
+	Publish *Publish `protobuf:"bytes,8,opt,name=publish,proto3,oneof"`
 }
 
 type ClientMessage_SubRefresh struct {
-	SubRefresh *SubRefresh `protobuf:"bytes,8,opt,name=sub_refresh,json=subRefresh,proto3,oneof"`
+	SubRefresh *SubRefresh `protobuf:"bytes,9,opt,name=sub_refresh,proto3,oneof"`
 }
+
+func (*ClientMessage_Connect) isClientMessage_Body() {}
 
 func (*ClientMessage_Subscribe) isClientMessage_Body() {}
 
@@ -349,15 +365,15 @@ type ServerMessage_Connected struct {
 }
 
 type ServerMessage_SubscribeAck struct {
-	SubscribeAck *SubscribeAck `protobuf:"bytes,5,opt,name=subscribe_ack,json=subscribeAck,proto3,oneof"`
+	SubscribeAck *SubscribeAck `protobuf:"bytes,5,opt,name=subscribe_ack,proto3,oneof"`
 }
 
 type ServerMessage_UnsubscribeAck struct {
-	UnsubscribeAck *UnsubscribeAck `protobuf:"bytes,6,opt,name=unsubscribe_ack,json=unsubscribeAck,proto3,oneof"`
+	UnsubscribeAck *UnsubscribeAck `protobuf:"bytes,6,opt,name=unsubscribe_ack,proto3,oneof"`
 }
 
 type ServerMessage_RpcReply struct {
-	RpcReply *RPCReply `protobuf:"bytes,7,opt,name=rpc_reply,json=rpcReply,proto3,oneof"`
+	RpcReply *RPCReply `protobuf:"bytes,7,opt,name=rpc_reply,proto3,oneof"`
 }
 
 type ServerMessage_Pong struct {
@@ -365,7 +381,7 @@ type ServerMessage_Pong struct {
 }
 
 type ServerMessage_PublishAck struct {
-	PublishAck *PublishAck `protobuf:"bytes,9,opt,name=publish_ack,json=publishAck,proto3,oneof"`
+	PublishAck *PublishAck `protobuf:"bytes,9,opt,name=publish_ack,proto3,oneof"`
 }
 
 type ServerMessage_Publication struct {
@@ -373,7 +389,7 @@ type ServerMessage_Publication struct {
 }
 
 type ServerMessage_SubRefreshAck struct {
-	SubRefreshAck *SubRefreshAck `protobuf:"bytes,11,opt,name=sub_refresh_ack,json=subRefreshAck,proto3,oneof"`
+	SubRefreshAck *SubRefreshAck `protobuf:"bytes,11,opt,name=sub_refresh_ack,proto3,oneof"`
 }
 
 func (*ServerMessage_Error) isServerMessage_Body() {}
@@ -394,20 +410,104 @@ func (*ServerMessage_Publication) isServerMessage_Body() {}
 
 func (*ServerMessage_SubRefreshAck) isServerMessage_Body() {}
 
+type Connect struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,proto3" json:"client_id,omitempty"`
+	ClientType    string                 `protobuf:"bytes,2,opt,name=client_type,proto3" json:"client_type,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	Version       string                 `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"`
+	Subscriptions []*Subscription        `protobuf:"bytes,5,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Connect) Reset() {
+	*x = Connect{}
+	mi := &file_client_v1_client_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Connect) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Connect) ProtoMessage() {}
+
+func (x *Connect) ProtoReflect() protoreflect.Message {
+	mi := &file_client_v1_client_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Connect.ProtoReflect.Descriptor instead.
+func (*Connect) Descriptor() ([]byte, []int) {
+	return file_client_v1_client_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Connect) GetClientId() string {
+	if x != nil {
+		return x.ClientId
+	}
+	return ""
+}
+
+func (x *Connect) GetClientType() string {
+	if x != nil {
+		return x.ClientType
+	}
+	return ""
+}
+
+func (x *Connect) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *Connect) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *Connect) GetSubscriptions() []*Subscription {
+	if x != nil {
+		return x.Subscriptions
+	}
+	return nil
+}
+
+func (x *Connect) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
 type RPCRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
 	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RPCRequest) Reset() {
 	*x = RPCRequest{}
-	mi := &file_client_v1_client_proto_msgTypes[2]
+	mi := &file_client_v1_client_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +519,7 @@ func (x *RPCRequest) String() string {
 func (*RPCRequest) ProtoMessage() {}
 
 func (x *RPCRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[2]
+	mi := &file_client_v1_client_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +532,7 @@ func (x *RPCRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RPCRequest.ProtoReflect.Descriptor instead.
 func (*RPCRequest) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{2}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *RPCRequest) GetChannel() string {
@@ -473,15 +573,15 @@ func (x *RPCRequest) GetPayloadString() string {
 type RPCReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Error         *v1.Error              `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RPCReply) Reset() {
 	*x = RPCReply{}
-	mi := &file_client_v1_client_proto_msgTypes[3]
+	mi := &file_client_v1_client_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -493,7 +593,7 @@ func (x *RPCReply) String() string {
 func (*RPCReply) ProtoMessage() {}
 
 func (x *RPCReply) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[3]
+	mi := &file_client_v1_client_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -506,7 +606,7 @@ func (x *RPCReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RPCReply.ProtoReflect.Descriptor instead.
 func (*RPCReply) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{3}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *RPCReply) GetError() *v1.Error {
@@ -535,15 +635,15 @@ type Message struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
 	Offset        uint64                 `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Message) Reset() {
 	*x = Message{}
-	mi := &file_client_v1_client_proto_msgTypes[4]
+	mi := &file_client_v1_client_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -555,7 +655,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[4]
+	mi := &file_client_v1_client_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -568,7 +668,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{4}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Message) GetId() string {
@@ -615,7 +715,7 @@ type Publication struct {
 
 func (x *Publication) Reset() {
 	*x = Publication{}
-	mi := &file_client_v1_client_proto_msgTypes[5]
+	mi := &file_client_v1_client_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -627,7 +727,7 @@ func (x *Publication) String() string {
 func (*Publication) ProtoMessage() {}
 
 func (x *Publication) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[5]
+	mi := &file_client_v1_client_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -640,7 +740,7 @@ func (x *Publication) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Publication.ProtoReflect.Descriptor instead.
 func (*Publication) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{5}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Publication) GetMessages() []*Message {
@@ -652,7 +752,7 @@ func (x *Publication) GetMessages() []*Message {
 
 type Connected struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,proto3" json:"session_id,omitempty"`
 	Subscriptions []*Subscription        `protobuf:"bytes,2,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	Publications  []*Publication         `protobuf:"bytes,3,rep,name=publications,proto3" json:"publications,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -661,7 +761,7 @@ type Connected struct {
 
 func (x *Connected) Reset() {
 	*x = Connected{}
-	mi := &file_client_v1_client_proto_msgTypes[6]
+	mi := &file_client_v1_client_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -673,7 +773,7 @@ func (x *Connected) String() string {
 func (*Connected) ProtoMessage() {}
 
 func (x *Connected) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[6]
+	mi := &file_client_v1_client_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -686,7 +786,7 @@ func (x *Connected) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Connected.ProtoReflect.Descriptor instead.
 func (*Connected) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{6}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Connected) GetSessionId() string {
@@ -712,14 +812,16 @@ func (x *Connected) GetPublications() []*Publication {
 
 type Subscription struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"` //  string token = 3;
+	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
+	Ephemeral     bool                   `protobuf:"varint,2,opt,name=ephemeral,proto3" json:"ephemeral,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Subscription) Reset() {
 	*x = Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[7]
+	mi := &file_client_v1_client_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -731,7 +833,7 @@ func (x *Subscription) String() string {
 func (*Subscription) ProtoMessage() {}
 
 func (x *Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[7]
+	mi := &file_client_v1_client_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -744,7 +846,7 @@ func (x *Subscription) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Subscription.ProtoReflect.Descriptor instead.
 func (*Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{7}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Subscription) GetChannel() string {
@@ -754,16 +856,30 @@ func (x *Subscription) GetChannel() string {
 	return ""
 }
 
+func (x *Subscription) GetEphemeral() bool {
+	if x != nil {
+		return x.Ephemeral
+	}
+	return false
+}
+
+func (x *Subscription) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 type Subscribe struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	Subscriptions []*Subscribe_Subscription `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscriptions []*Subscription        `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Subscribe) Reset() {
 	*x = Subscribe{}
-	mi := &file_client_v1_client_proto_msgTypes[8]
+	mi := &file_client_v1_client_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -775,7 +891,7 @@ func (x *Subscribe) String() string {
 func (*Subscribe) ProtoMessage() {}
 
 func (x *Subscribe) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[8]
+	mi := &file_client_v1_client_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -788,10 +904,10 @@ func (x *Subscribe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Subscribe.ProtoReflect.Descriptor instead.
 func (*Subscribe) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{8}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *Subscribe) GetSubscriptions() []*Subscribe_Subscription {
+func (x *Subscribe) GetSubscriptions() []*Subscription {
 	if x != nil {
 		return x.Subscriptions
 	}
@@ -799,15 +915,15 @@ func (x *Subscribe) GetSubscriptions() []*Subscribe_Subscription {
 }
 
 type SubscribeAck struct {
-	state         protoimpl.MessageState       `protogen:"open.v1"`
-	Subscriptions []*SubscribeAck_Subscription `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscriptions []*Subscription        `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SubscribeAck) Reset() {
 	*x = SubscribeAck{}
-	mi := &file_client_v1_client_proto_msgTypes[9]
+	mi := &file_client_v1_client_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -819,7 +935,7 @@ func (x *SubscribeAck) String() string {
 func (*SubscribeAck) ProtoMessage() {}
 
 func (x *SubscribeAck) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[9]
+	mi := &file_client_v1_client_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,10 +948,10 @@ func (x *SubscribeAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeAck.ProtoReflect.Descriptor instead.
 func (*SubscribeAck) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{9}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *SubscribeAck) GetSubscriptions() []*SubscribeAck_Subscription {
+func (x *SubscribeAck) GetSubscriptions() []*Subscription {
 	if x != nil {
 		return x.Subscriptions
 	}
@@ -843,15 +959,15 @@ func (x *SubscribeAck) GetSubscriptions() []*SubscribeAck_Subscription {
 }
 
 type Unsubscribe struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	Subscriptions []*Unsubscribe_Subscription `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscriptions []*Subscription        `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Unsubscribe) Reset() {
 	*x = Unsubscribe{}
-	mi := &file_client_v1_client_proto_msgTypes[10]
+	mi := &file_client_v1_client_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -863,7 +979,7 @@ func (x *Unsubscribe) String() string {
 func (*Unsubscribe) ProtoMessage() {}
 
 func (x *Unsubscribe) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[10]
+	mi := &file_client_v1_client_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -876,10 +992,10 @@ func (x *Unsubscribe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Unsubscribe.ProtoReflect.Descriptor instead.
 func (*Unsubscribe) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{10}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *Unsubscribe) GetSubscriptions() []*Unsubscribe_Subscription {
+func (x *Unsubscribe) GetSubscriptions() []*Subscription {
 	if x != nil {
 		return x.Subscriptions
 	}
@@ -887,15 +1003,15 @@ func (x *Unsubscribe) GetSubscriptions() []*Unsubscribe_Subscription {
 }
 
 type UnsubscribeAck struct {
-	state         protoimpl.MessageState         `protogen:"open.v1"`
-	Subscriptions []*UnsubscribeAck_Subscription `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscriptions []*Subscription        `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UnsubscribeAck) Reset() {
 	*x = UnsubscribeAck{}
-	mi := &file_client_v1_client_proto_msgTypes[11]
+	mi := &file_client_v1_client_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -907,7 +1023,7 @@ func (x *UnsubscribeAck) String() string {
 func (*UnsubscribeAck) ProtoMessage() {}
 
 func (x *UnsubscribeAck) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[11]
+	mi := &file_client_v1_client_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -920,10 +1036,10 @@ func (x *UnsubscribeAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnsubscribeAck.ProtoReflect.Descriptor instead.
 func (*UnsubscribeAck) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{11}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *UnsubscribeAck) GetSubscriptions() []*UnsubscribeAck_Subscription {
+func (x *UnsubscribeAck) GetSubscriptions() []*Subscription {
 	if x != nil {
 		return x.Subscriptions
 	}
@@ -931,15 +1047,15 @@ func (x *UnsubscribeAck) GetSubscriptions() []*UnsubscribeAck_Subscription {
 }
 
 type RefreshSub struct {
-	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Subscriptions []*RefreshSub_Subscription `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscriptions []*Subscription        `protobuf:"bytes,1,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RefreshSub) Reset() {
 	*x = RefreshSub{}
-	mi := &file_client_v1_client_proto_msgTypes[12]
+	mi := &file_client_v1_client_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -951,7 +1067,7 @@ func (x *RefreshSub) String() string {
 func (*RefreshSub) ProtoMessage() {}
 
 func (x *RefreshSub) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[12]
+	mi := &file_client_v1_client_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -964,10 +1080,10 @@ func (x *RefreshSub) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshSub.ProtoReflect.Descriptor instead.
 func (*RefreshSub) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{12}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *RefreshSub) GetSubscriptions() []*RefreshSub_Subscription {
+func (x *RefreshSub) GetSubscriptions() []*Subscription {
 	if x != nil {
 		return x.Subscriptions
 	}
@@ -982,7 +1098,7 @@ type Ping struct {
 
 func (x *Ping) Reset() {
 	*x = Ping{}
-	mi := &file_client_v1_client_proto_msgTypes[13]
+	mi := &file_client_v1_client_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -994,7 +1110,7 @@ func (x *Ping) String() string {
 func (*Ping) ProtoMessage() {}
 
 func (x *Ping) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[13]
+	mi := &file_client_v1_client_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1007,7 +1123,7 @@ func (x *Ping) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ping.ProtoReflect.Descriptor instead.
 func (*Ping) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{13}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{14}
 }
 
 type Pong struct {
@@ -1018,7 +1134,7 @@ type Pong struct {
 
 func (x *Pong) Reset() {
 	*x = Pong{}
-	mi := &file_client_v1_client_proto_msgTypes[14]
+	mi := &file_client_v1_client_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1030,7 +1146,7 @@ func (x *Pong) String() string {
 func (*Pong) ProtoMessage() {}
 
 func (x *Pong) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[14]
+	mi := &file_client_v1_client_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1043,21 +1159,21 @@ func (x *Pong) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pong.ProtoReflect.Descriptor instead.
 func (*Pong) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{14}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{15}
 }
 
 type Publish struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,json=payloadBytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,json=payloadString,proto3" json:"payload_string,omitempty"`
+	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
+	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Publish) Reset() {
 	*x = Publish{}
-	mi := &file_client_v1_client_proto_msgTypes[15]
+	mi := &file_client_v1_client_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1069,7 +1185,7 @@ func (x *Publish) String() string {
 func (*Publish) ProtoMessage() {}
 
 func (x *Publish) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[15]
+	mi := &file_client_v1_client_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1082,7 +1198,7 @@ func (x *Publish) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Publish.ProtoReflect.Descriptor instead.
 func (*Publish) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{15}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Publish) GetChannel() string {
@@ -1116,7 +1232,7 @@ type PublishAck struct {
 
 func (x *PublishAck) Reset() {
 	*x = PublishAck{}
-	mi := &file_client_v1_client_proto_msgTypes[16]
+	mi := &file_client_v1_client_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1128,7 +1244,7 @@ func (x *PublishAck) String() string {
 func (*PublishAck) ProtoMessage() {}
 
 func (x *PublishAck) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[16]
+	mi := &file_client_v1_client_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1141,7 +1257,7 @@ func (x *PublishAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublishAck.ProtoReflect.Descriptor instead.
 func (*PublishAck) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{16}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *PublishAck) GetChannel() string {
@@ -1167,7 +1283,7 @@ type SubRefresh struct {
 
 func (x *SubRefresh) Reset() {
 	*x = SubRefresh{}
-	mi := &file_client_v1_client_proto_msgTypes[17]
+	mi := &file_client_v1_client_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1179,7 +1295,7 @@ func (x *SubRefresh) String() string {
 func (*SubRefresh) ProtoMessage() {}
 
 func (x *SubRefresh) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[17]
+	mi := &file_client_v1_client_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1192,7 +1308,7 @@ func (x *SubRefresh) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubRefresh.ProtoReflect.Descriptor instead.
 func (*SubRefresh) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{17}
+	return file_client_v1_client_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *SubRefresh) GetChannels() []string {
@@ -1210,7 +1326,7 @@ type SubRefreshAck struct {
 
 func (x *SubRefreshAck) Reset() {
 	*x = SubRefreshAck{}
-	mi := &file_client_v1_client_proto_msgTypes[18]
+	mi := &file_client_v1_client_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1222,7 +1338,7 @@ func (x *SubRefreshAck) String() string {
 func (*SubRefreshAck) ProtoMessage() {}
 
 func (x *SubRefreshAck) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[18]
+	mi := &file_client_v1_client_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1235,350 +1351,104 @@ func (x *SubRefreshAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubRefreshAck.ProtoReflect.Descriptor instead.
 func (*SubRefreshAck) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{18}
-}
-
-type Subscribe_Subscription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Subscribe_Subscription) Reset() {
-	*x = Subscribe_Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Subscribe_Subscription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Subscribe_Subscription) ProtoMessage() {}
-
-func (x *Subscribe_Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Subscribe_Subscription.ProtoReflect.Descriptor instead.
-func (*Subscribe_Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{8, 0}
-}
-
-func (x *Subscribe_Subscription) GetChannel() string {
-	if x != nil {
-		return x.Channel
-	}
-	return ""
-}
-
-func (x *Subscribe_Subscription) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
-}
-
-type SubscribeAck_Subscription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SubscribeAck_Subscription) Reset() {
-	*x = SubscribeAck_Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SubscribeAck_Subscription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeAck_Subscription) ProtoMessage() {}
-
-func (x *SubscribeAck_Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeAck_Subscription.ProtoReflect.Descriptor instead.
-func (*SubscribeAck_Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{9, 0}
-}
-
-func (x *SubscribeAck_Subscription) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *SubscribeAck_Subscription) GetChannel() string {
-	if x != nil {
-		return x.Channel
-	}
-	return ""
-}
-
-type Unsubscribe_Subscription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Unsubscribe_Subscription) Reset() {
-	*x = Unsubscribe_Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Unsubscribe_Subscription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Unsubscribe_Subscription) ProtoMessage() {}
-
-func (x *Unsubscribe_Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Unsubscribe_Subscription.ProtoReflect.Descriptor instead.
-func (*Unsubscribe_Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{10, 0}
-}
-
-func (x *Unsubscribe_Subscription) GetChannel() string {
-	if x != nil {
-		return x.Channel
-	}
-	return ""
-}
-
-type UnsubscribeAck_Subscription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UnsubscribeAck_Subscription) Reset() {
-	*x = UnsubscribeAck_Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UnsubscribeAck_Subscription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UnsubscribeAck_Subscription) ProtoMessage() {}
-
-func (x *UnsubscribeAck_Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UnsubscribeAck_Subscription.ProtoReflect.Descriptor instead.
-func (*UnsubscribeAck_Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{11, 0}
-}
-
-func (x *UnsubscribeAck_Subscription) GetChannel() string {
-	if x != nil {
-		return x.Channel
-	}
-	return ""
-}
-
-type RefreshSub_Subscription struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RefreshSub_Subscription) Reset() {
-	*x = RefreshSub_Subscription{}
-	mi := &file_client_v1_client_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RefreshSub_Subscription) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RefreshSub_Subscription) ProtoMessage() {}
-
-func (x *RefreshSub_Subscription) ProtoReflect() protoreflect.Message {
-	mi := &file_client_v1_client_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RefreshSub_Subscription.ProtoReflect.Descriptor instead.
-func (*RefreshSub_Subscription) Descriptor() ([]byte, []int) {
-	return file_client_v1_client_proto_rawDescGZIP(), []int{12, 0}
-}
-
-func (x *RefreshSub_Subscription) GetChannel() string {
-	if x != nil {
-		return x.Channel
-	}
-	return ""
-}
-
-func (x *RefreshSub_Subscription) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
+	return file_client_v1_client_proto_rawDescGZIP(), []int{19}
 }
 
 var File_client_v1_client_proto protoreflect.FileDescriptor
 
 const file_client_v1_client_proto_rawDesc = "" +
 	"\n" +
-	"\x16client/v1/client.proto\x12\x15messageloop.client.v1\x1a\x16shared/v1/errors.proto\"\xb5\x04\n" +
+	"\x16client/v1/client.proto\x12\x15messageloop.client.v1\x1a\x16shared/v1/errors.proto\"\xf3\x04\n" +
 	"\rClientMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12K\n" +
-	"\aheaders\x18\x02 \x03(\v21.messageloop.client.v1.ClientMessage.HeadersEntryR\aheaders\x12@\n" +
-	"\tsubscribe\x18\x03 \x01(\v2 .messageloop.client.v1.SubscribeH\x00R\tsubscribe\x12F\n" +
-	"\vunsubscribe\x18\x04 \x01(\v2\".messageloop.client.v1.UnsubscribeH\x00R\vunsubscribe\x12D\n" +
-	"\vrpc_request\x18\x05 \x01(\v2!.messageloop.client.v1.RPCRequestH\x00R\n" +
-	"rpcRequest\x121\n" +
-	"\x04ping\x18\x06 \x01(\v2\x1b.messageloop.client.v1.PingH\x00R\x04ping\x12:\n" +
-	"\apublish\x18\a \x01(\v2\x1e.messageloop.client.v1.PublishH\x00R\apublish\x12D\n" +
-	"\vsub_refresh\x18\b \x01(\v2!.messageloop.client.v1.SubRefreshH\x00R\n" +
-	"subRefresh\x1a:\n" +
+	"\aheaders\x18\x02 \x03(\v21.messageloop.client.v1.ClientMessage.HeadersEntryR\aheaders\x12:\n" +
+	"\aconnect\x18\x03 \x01(\v2\x1e.messageloop.client.v1.ConnectH\x00R\aconnect\x12@\n" +
+	"\tsubscribe\x18\x04 \x01(\v2 .messageloop.client.v1.SubscribeH\x00R\tsubscribe\x12F\n" +
+	"\vunsubscribe\x18\x05 \x01(\v2\".messageloop.client.v1.UnsubscribeH\x00R\vunsubscribe\x12E\n" +
+	"\vrpc_request\x18\x06 \x01(\v2!.messageloop.client.v1.RPCRequestH\x00R\vrpc_request\x121\n" +
+	"\x04ping\x18\a \x01(\v2\x1b.messageloop.client.v1.PingH\x00R\x04ping\x12:\n" +
+	"\apublish\x18\b \x01(\v2\x1e.messageloop.client.v1.PublishH\x00R\apublish\x12E\n" +
+	"\vsub_refresh\x18\t \x01(\v2!.messageloop.client.v1.SubRefreshH\x00R\vsub_refresh\x1a:\n" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x06\n" +
-	"\x04body\"\x97\x06\n" +
+	"\x04body\"\x9d\x06\n" +
 	"\rServerMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12K\n" +
 	"\aheaders\x18\x02 \x03(\v21.messageloop.client.v1.ServerMessage.HeadersEntryR\aheaders\x124\n" +
 	"\x05error\x18\x03 \x01(\v2\x1c.messageloop.shared.v1.ErrorH\x00R\x05error\x12@\n" +
-	"\tconnected\x18\x04 \x01(\v2 .messageloop.client.v1.ConnectedH\x00R\tconnected\x12J\n" +
-	"\rsubscribe_ack\x18\x05 \x01(\v2#.messageloop.client.v1.SubscribeAckH\x00R\fsubscribeAck\x12P\n" +
-	"\x0funsubscribe_ack\x18\x06 \x01(\v2%.messageloop.client.v1.UnsubscribeAckH\x00R\x0eunsubscribeAck\x12>\n" +
-	"\trpc_reply\x18\a \x01(\v2\x1f.messageloop.client.v1.RPCReplyH\x00R\brpcReply\x121\n" +
-	"\x04pong\x18\b \x01(\v2\x1b.messageloop.client.v1.PongH\x00R\x04pong\x12D\n" +
-	"\vpublish_ack\x18\t \x01(\v2!.messageloop.client.v1.PublishAckH\x00R\n" +
-	"publishAck\x12F\n" +
+	"\tconnected\x18\x04 \x01(\v2 .messageloop.client.v1.ConnectedH\x00R\tconnected\x12K\n" +
+	"\rsubscribe_ack\x18\x05 \x01(\v2#.messageloop.client.v1.SubscribeAckH\x00R\rsubscribe_ack\x12Q\n" +
+	"\x0funsubscribe_ack\x18\x06 \x01(\v2%.messageloop.client.v1.UnsubscribeAckH\x00R\x0funsubscribe_ack\x12?\n" +
+	"\trpc_reply\x18\a \x01(\v2\x1f.messageloop.client.v1.RPCReplyH\x00R\trpc_reply\x121\n" +
+	"\x04pong\x18\b \x01(\v2\x1b.messageloop.client.v1.PongH\x00R\x04pong\x12E\n" +
+	"\vpublish_ack\x18\t \x01(\v2!.messageloop.client.v1.PublishAckH\x00R\vpublish_ack\x12F\n" +
 	"\vpublication\x18\n" +
-	" \x01(\v2\".messageloop.client.v1.PublicationH\x00R\vpublication\x12N\n" +
-	"\x0fsub_refresh_ack\x18\v \x01(\v2$.messageloop.client.v1.SubRefreshAckH\x00R\rsubRefreshAck\x1a:\n" +
+	" \x01(\v2\".messageloop.client.v1.PublicationH\x00R\vpublication\x12P\n" +
+	"\x0fsub_refresh_ack\x18\v \x01(\v2$.messageloop.client.v1.SubRefreshAckH\x00R\x0fsub_refresh_ack\x1a:\n" +
 	"\fHeadersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x06\n" +
-	"\x04body\"\x94\x02\n" +
+	"\x04body\"\xcb\x02\n" +
+	"\aConnect\x12\x1c\n" +
+	"\tclient_id\x18\x01 \x01(\tR\tclient_id\x12 \n" +
+	"\vclient_type\x18\x02 \x01(\tR\vclient_type\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
+	"\aversion\x18\x04 \x01(\tR\aversion\x12I\n" +
+	"\rsubscriptions\x18\x05 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\x12H\n" +
+	"\bmetadata\x18\x06 \x03(\v2,.messageloop.client.v1.Connect.MetadataEntryR\bmetadata\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x96\x02\n" +
 	"\n" +
 	"RPCRequest\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +
 	"\x06method\x18\x02 \x01(\tR\x06method\x12K\n" +
-	"\bmetadata\x18\x03 \x03(\v2/.messageloop.client.v1.RPCRequest.MetadataEntryR\bmetadata\x12#\n" +
-	"\rpayload_bytes\x18\x04 \x01(\fR\fpayloadBytes\x12%\n" +
-	"\x0epayload_string\x18\x05 \x01(\tR\rpayloadString\x1a;\n" +
+	"\bmetadata\x18\x03 \x03(\v2/.messageloop.client.v1.RPCRequest.MetadataEntryR\bmetadata\x12$\n" +
+	"\rpayload_bytes\x18\x04 \x01(\fR\rpayload_bytes\x12&\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8a\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8c\x01\n" +
 	"\bRPCReply\x122\n" +
-	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12#\n" +
-	"\rpayload_bytes\x18\x02 \x01(\fR\fpayloadBytes\x12%\n" +
-	"\x0epayload_string\x18\x03 \x01(\tR\rpayloadString\"\x97\x01\n" +
+	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12$\n" +
+	"\rpayload_bytes\x18\x02 \x01(\fR\rpayload_bytes\x12&\n" +
+	"\x0epayload_string\x18\x03 \x01(\tR\x0epayload_string\"\x99\x01\n" +
 	"\aMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\achannel\x18\x02 \x01(\tR\achannel\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12#\n" +
-	"\rpayload_bytes\x18\x04 \x01(\fR\fpayloadBytes\x12%\n" +
-	"\x0epayload_string\x18\x05 \x01(\tR\rpayloadString\"I\n" +
+	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12$\n" +
+	"\rpayload_bytes\x18\x04 \x01(\fR\rpayload_bytes\x12&\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\"I\n" +
 	"\vPublication\x12:\n" +
-	"\bmessages\x18\x03 \x03(\v2\x1e.messageloop.client.v1.MessageR\bmessages\"\xbd\x01\n" +
-	"\tConnected\x12\x1d\n" +
+	"\bmessages\x18\x03 \x03(\v2\x1e.messageloop.client.v1.MessageR\bmessages\"\xbe\x01\n" +
+	"\tConnected\x12\x1e\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12I\n" +
+	"session_id\x18\x01 \x01(\tR\n" +
+	"session_id\x12I\n" +
 	"\rsubscriptions\x18\x02 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\x12F\n" +
-	"\fpublications\x18\x03 \x03(\v2\".messageloop.client.v1.PublicationR\fpublications\"(\n" +
+	"\fpublications\x18\x03 \x03(\v2\".messageloop.client.v1.PublicationR\fpublications\"\\\n" +
 	"\fSubscription\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\"\xa0\x01\n" +
-	"\tSubscribe\x12S\n" +
-	"\rsubscriptions\x18\x01 \x03(\v2-.messageloop.client.v1.Subscribe.SubscriptionR\rsubscriptions\x1a>\n" +
-	"\fSubscription\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"\xa0\x01\n" +
-	"\fSubscribeAck\x12V\n" +
-	"\rsubscriptions\x18\x01 \x03(\v20.messageloop.client.v1.SubscribeAck.SubscriptionR\rsubscriptions\x1a8\n" +
-	"\fSubscription\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\achannel\x18\x02 \x01(\tR\achannel\"\x8e\x01\n" +
-	"\vUnsubscribe\x12U\n" +
-	"\rsubscriptions\x18\x01 \x03(\v2/.messageloop.client.v1.Unsubscribe.SubscriptionR\rsubscriptions\x1a(\n" +
-	"\fSubscription\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\"\x94\x01\n" +
-	"\x0eUnsubscribeAck\x12X\n" +
-	"\rsubscriptions\x18\x01 \x03(\v22.messageloop.client.v1.UnsubscribeAck.SubscriptionR\rsubscriptions\x1a(\n" +
-	"\fSubscription\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\"\xa2\x01\n" +
+	"\achannel\x18\x01 \x01(\tR\achannel\x12\x1c\n" +
+	"\tephemeral\x18\x02 \x01(\bR\tephemeral\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"V\n" +
+	"\tSubscribe\x12I\n" +
+	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"Y\n" +
+	"\fSubscribeAck\x12I\n" +
+	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"X\n" +
+	"\vUnsubscribe\x12I\n" +
+	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"[\n" +
+	"\x0eUnsubscribeAck\x12I\n" +
+	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"W\n" +
 	"\n" +
-	"RefreshSub\x12T\n" +
-	"\rsubscriptions\x18\x01 \x03(\v2..messageloop.client.v1.RefreshSub.SubscriptionR\rsubscriptions\x1a>\n" +
-	"\fSubscription\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12\x14\n" +
-	"\x05token\x18\x02 \x01(\tR\x05token\"\x06\n" +
+	"RefreshSub\x12I\n" +
+	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"\x06\n" +
 	"\x04Ping\"\x06\n" +
-	"\x04Pong\"o\n" +
+	"\x04Pong\"q\n" +
 	"\aPublish\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12#\n" +
-	"\rpayload_bytes\x18\x02 \x01(\fR\fpayloadBytes\x12%\n" +
-	"\x0epayload_string\x18\x03 \x01(\tR\rpayloadString\">\n" +
+	"\achannel\x18\x01 \x01(\tR\achannel\x12$\n" +
+	"\rpayload_bytes\x18\x02 \x01(\fR\rpayload_bytes\x12&\n" +
+	"\x0epayload_string\x18\x03 \x01(\tR\x0epayload_string\">\n" +
 	"\n" +
 	"PublishAck\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +
@@ -1603,72 +1473,72 @@ func file_client_v1_client_proto_rawDescGZIP() []byte {
 	return file_client_v1_client_proto_rawDescData
 }
 
-var file_client_v1_client_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_client_v1_client_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_client_v1_client_proto_goTypes = []any{
-	(*ClientMessage)(nil),               // 0: messageloop.client.v1.ClientMessage
-	(*ServerMessage)(nil),               // 1: messageloop.client.v1.ServerMessage
-	(*RPCRequest)(nil),                  // 2: messageloop.client.v1.RPCRequest
-	(*RPCReply)(nil),                    // 3: messageloop.client.v1.RPCReply
-	(*Message)(nil),                     // 4: messageloop.client.v1.Message
-	(*Publication)(nil),                 // 5: messageloop.client.v1.Publication
-	(*Connected)(nil),                   // 6: messageloop.client.v1.Connected
-	(*Subscription)(nil),                // 7: messageloop.client.v1.Subscription
-	(*Subscribe)(nil),                   // 8: messageloop.client.v1.Subscribe
-	(*SubscribeAck)(nil),                // 9: messageloop.client.v1.SubscribeAck
-	(*Unsubscribe)(nil),                 // 10: messageloop.client.v1.Unsubscribe
-	(*UnsubscribeAck)(nil),              // 11: messageloop.client.v1.UnsubscribeAck
-	(*RefreshSub)(nil),                  // 12: messageloop.client.v1.RefreshSub
-	(*Ping)(nil),                        // 13: messageloop.client.v1.Ping
-	(*Pong)(nil),                        // 14: messageloop.client.v1.Pong
-	(*Publish)(nil),                     // 15: messageloop.client.v1.Publish
-	(*PublishAck)(nil),                  // 16: messageloop.client.v1.PublishAck
-	(*SubRefresh)(nil),                  // 17: messageloop.client.v1.SubRefresh
-	(*SubRefreshAck)(nil),               // 18: messageloop.client.v1.SubRefreshAck
-	nil,                                 // 19: messageloop.client.v1.ClientMessage.HeadersEntry
-	nil,                                 // 20: messageloop.client.v1.ServerMessage.HeadersEntry
-	nil,                                 // 21: messageloop.client.v1.RPCRequest.MetadataEntry
-	(*Subscribe_Subscription)(nil),      // 22: messageloop.client.v1.Subscribe.Subscription
-	(*SubscribeAck_Subscription)(nil),   // 23: messageloop.client.v1.SubscribeAck.Subscription
-	(*Unsubscribe_Subscription)(nil),    // 24: messageloop.client.v1.Unsubscribe.Subscription
-	(*UnsubscribeAck_Subscription)(nil), // 25: messageloop.client.v1.UnsubscribeAck.Subscription
-	(*RefreshSub_Subscription)(nil),     // 26: messageloop.client.v1.RefreshSub.Subscription
-	(*v1.Error)(nil),                    // 27: messageloop.shared.v1.Error
+	(*ClientMessage)(nil),  // 0: messageloop.client.v1.ClientMessage
+	(*ServerMessage)(nil),  // 1: messageloop.client.v1.ServerMessage
+	(*Connect)(nil),        // 2: messageloop.client.v1.Connect
+	(*RPCRequest)(nil),     // 3: messageloop.client.v1.RPCRequest
+	(*RPCReply)(nil),       // 4: messageloop.client.v1.RPCReply
+	(*Message)(nil),        // 5: messageloop.client.v1.Message
+	(*Publication)(nil),    // 6: messageloop.client.v1.Publication
+	(*Connected)(nil),      // 7: messageloop.client.v1.Connected
+	(*Subscription)(nil),   // 8: messageloop.client.v1.Subscription
+	(*Subscribe)(nil),      // 9: messageloop.client.v1.Subscribe
+	(*SubscribeAck)(nil),   // 10: messageloop.client.v1.SubscribeAck
+	(*Unsubscribe)(nil),    // 11: messageloop.client.v1.Unsubscribe
+	(*UnsubscribeAck)(nil), // 12: messageloop.client.v1.UnsubscribeAck
+	(*RefreshSub)(nil),     // 13: messageloop.client.v1.RefreshSub
+	(*Ping)(nil),           // 14: messageloop.client.v1.Ping
+	(*Pong)(nil),           // 15: messageloop.client.v1.Pong
+	(*Publish)(nil),        // 16: messageloop.client.v1.Publish
+	(*PublishAck)(nil),     // 17: messageloop.client.v1.PublishAck
+	(*SubRefresh)(nil),     // 18: messageloop.client.v1.SubRefresh
+	(*SubRefreshAck)(nil),  // 19: messageloop.client.v1.SubRefreshAck
+	nil,                    // 20: messageloop.client.v1.ClientMessage.HeadersEntry
+	nil,                    // 21: messageloop.client.v1.ServerMessage.HeadersEntry
+	nil,                    // 22: messageloop.client.v1.Connect.MetadataEntry
+	nil,                    // 23: messageloop.client.v1.RPCRequest.MetadataEntry
+	(*v1.Error)(nil),       // 24: messageloop.shared.v1.Error
 }
 var file_client_v1_client_proto_depIdxs = []int32{
-	19, // 0: messageloop.client.v1.ClientMessage.headers:type_name -> messageloop.client.v1.ClientMessage.HeadersEntry
-	8,  // 1: messageloop.client.v1.ClientMessage.subscribe:type_name -> messageloop.client.v1.Subscribe
-	10, // 2: messageloop.client.v1.ClientMessage.unsubscribe:type_name -> messageloop.client.v1.Unsubscribe
-	2,  // 3: messageloop.client.v1.ClientMessage.rpc_request:type_name -> messageloop.client.v1.RPCRequest
-	13, // 4: messageloop.client.v1.ClientMessage.ping:type_name -> messageloop.client.v1.Ping
-	15, // 5: messageloop.client.v1.ClientMessage.publish:type_name -> messageloop.client.v1.Publish
-	17, // 6: messageloop.client.v1.ClientMessage.sub_refresh:type_name -> messageloop.client.v1.SubRefresh
-	20, // 7: messageloop.client.v1.ServerMessage.headers:type_name -> messageloop.client.v1.ServerMessage.HeadersEntry
-	27, // 8: messageloop.client.v1.ServerMessage.error:type_name -> messageloop.shared.v1.Error
-	6,  // 9: messageloop.client.v1.ServerMessage.connected:type_name -> messageloop.client.v1.Connected
-	9,  // 10: messageloop.client.v1.ServerMessage.subscribe_ack:type_name -> messageloop.client.v1.SubscribeAck
-	11, // 11: messageloop.client.v1.ServerMessage.unsubscribe_ack:type_name -> messageloop.client.v1.UnsubscribeAck
-	3,  // 12: messageloop.client.v1.ServerMessage.rpc_reply:type_name -> messageloop.client.v1.RPCReply
-	14, // 13: messageloop.client.v1.ServerMessage.pong:type_name -> messageloop.client.v1.Pong
-	16, // 14: messageloop.client.v1.ServerMessage.publish_ack:type_name -> messageloop.client.v1.PublishAck
-	5,  // 15: messageloop.client.v1.ServerMessage.publication:type_name -> messageloop.client.v1.Publication
-	18, // 16: messageloop.client.v1.ServerMessage.sub_refresh_ack:type_name -> messageloop.client.v1.SubRefreshAck
-	21, // 17: messageloop.client.v1.RPCRequest.metadata:type_name -> messageloop.client.v1.RPCRequest.MetadataEntry
-	27, // 18: messageloop.client.v1.RPCReply.error:type_name -> messageloop.shared.v1.Error
-	4,  // 19: messageloop.client.v1.Publication.messages:type_name -> messageloop.client.v1.Message
-	7,  // 20: messageloop.client.v1.Connected.subscriptions:type_name -> messageloop.client.v1.Subscription
-	5,  // 21: messageloop.client.v1.Connected.publications:type_name -> messageloop.client.v1.Publication
-	22, // 22: messageloop.client.v1.Subscribe.subscriptions:type_name -> messageloop.client.v1.Subscribe.Subscription
-	23, // 23: messageloop.client.v1.SubscribeAck.subscriptions:type_name -> messageloop.client.v1.SubscribeAck.Subscription
-	24, // 24: messageloop.client.v1.Unsubscribe.subscriptions:type_name -> messageloop.client.v1.Unsubscribe.Subscription
-	25, // 25: messageloop.client.v1.UnsubscribeAck.subscriptions:type_name -> messageloop.client.v1.UnsubscribeAck.Subscription
-	26, // 26: messageloop.client.v1.RefreshSub.subscriptions:type_name -> messageloop.client.v1.RefreshSub.Subscription
-	0,  // 27: messageloop.client.v1.MessageLoopService.MessageLoop:input_type -> messageloop.client.v1.ClientMessage
-	1,  // 28: messageloop.client.v1.MessageLoopService.MessageLoop:output_type -> messageloop.client.v1.ServerMessage
-	28, // [28:29] is the sub-list for method output_type
-	27, // [27:28] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	20, // 0: messageloop.client.v1.ClientMessage.headers:type_name -> messageloop.client.v1.ClientMessage.HeadersEntry
+	2,  // 1: messageloop.client.v1.ClientMessage.connect:type_name -> messageloop.client.v1.Connect
+	9,  // 2: messageloop.client.v1.ClientMessage.subscribe:type_name -> messageloop.client.v1.Subscribe
+	11, // 3: messageloop.client.v1.ClientMessage.unsubscribe:type_name -> messageloop.client.v1.Unsubscribe
+	3,  // 4: messageloop.client.v1.ClientMessage.rpc_request:type_name -> messageloop.client.v1.RPCRequest
+	14, // 5: messageloop.client.v1.ClientMessage.ping:type_name -> messageloop.client.v1.Ping
+	16, // 6: messageloop.client.v1.ClientMessage.publish:type_name -> messageloop.client.v1.Publish
+	18, // 7: messageloop.client.v1.ClientMessage.sub_refresh:type_name -> messageloop.client.v1.SubRefresh
+	21, // 8: messageloop.client.v1.ServerMessage.headers:type_name -> messageloop.client.v1.ServerMessage.HeadersEntry
+	24, // 9: messageloop.client.v1.ServerMessage.error:type_name -> messageloop.shared.v1.Error
+	7,  // 10: messageloop.client.v1.ServerMessage.connected:type_name -> messageloop.client.v1.Connected
+	10, // 11: messageloop.client.v1.ServerMessage.subscribe_ack:type_name -> messageloop.client.v1.SubscribeAck
+	12, // 12: messageloop.client.v1.ServerMessage.unsubscribe_ack:type_name -> messageloop.client.v1.UnsubscribeAck
+	4,  // 13: messageloop.client.v1.ServerMessage.rpc_reply:type_name -> messageloop.client.v1.RPCReply
+	15, // 14: messageloop.client.v1.ServerMessage.pong:type_name -> messageloop.client.v1.Pong
+	17, // 15: messageloop.client.v1.ServerMessage.publish_ack:type_name -> messageloop.client.v1.PublishAck
+	6,  // 16: messageloop.client.v1.ServerMessage.publication:type_name -> messageloop.client.v1.Publication
+	19, // 17: messageloop.client.v1.ServerMessage.sub_refresh_ack:type_name -> messageloop.client.v1.SubRefreshAck
+	8,  // 18: messageloop.client.v1.Connect.subscriptions:type_name -> messageloop.client.v1.Subscription
+	22, // 19: messageloop.client.v1.Connect.metadata:type_name -> messageloop.client.v1.Connect.MetadataEntry
+	23, // 20: messageloop.client.v1.RPCRequest.metadata:type_name -> messageloop.client.v1.RPCRequest.MetadataEntry
+	24, // 21: messageloop.client.v1.RPCReply.error:type_name -> messageloop.shared.v1.Error
+	5,  // 22: messageloop.client.v1.Publication.messages:type_name -> messageloop.client.v1.Message
+	8,  // 23: messageloop.client.v1.Connected.subscriptions:type_name -> messageloop.client.v1.Subscription
+	6,  // 24: messageloop.client.v1.Connected.publications:type_name -> messageloop.client.v1.Publication
+	8,  // 25: messageloop.client.v1.Subscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 26: messageloop.client.v1.SubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 27: messageloop.client.v1.Unsubscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 28: messageloop.client.v1.UnsubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 29: messageloop.client.v1.RefreshSub.subscriptions:type_name -> messageloop.client.v1.Subscription
+	0,  // 30: messageloop.client.v1.MessageLoopService.MessageLoop:input_type -> messageloop.client.v1.ClientMessage
+	1,  // 31: messageloop.client.v1.MessageLoopService.MessageLoop:output_type -> messageloop.client.v1.ServerMessage
+	31, // [31:32] is the sub-list for method output_type
+	30, // [30:31] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_client_v1_client_proto_init() }
@@ -1677,6 +1547,7 @@ func file_client_v1_client_proto_init() {
 		return
 	}
 	file_client_v1_client_proto_msgTypes[0].OneofWrappers = []any{
+		(*ClientMessage_Connect)(nil),
 		(*ClientMessage_Subscribe)(nil),
 		(*ClientMessage_Unsubscribe)(nil),
 		(*ClientMessage_RpcRequest)(nil),
@@ -1701,7 +1572,7 @@ func file_client_v1_client_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_client_v1_client_proto_rawDesc), len(file_client_v1_client_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
