@@ -23,10 +23,11 @@ const (
 )
 
 type ClientMessage struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Id      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Headers map[string]string      `protobuf:"bytes,2,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Types that are valid to be assigned to Body:
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Id       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Metadata map[string]string      `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Time     uint64                 `protobuf:"varint,3,opt,name=time,proto3" json:"time,omitempty"`
+	// Types that are valid to be assigned to Envelope:
 	//
 	//	*ClientMessage_Connect
 	//	*ClientMessage_Subscribe
@@ -35,7 +36,7 @@ type ClientMessage struct {
 	//	*ClientMessage_Ping
 	//	*ClientMessage_Publish
 	//	*ClientMessage_SubRefresh
-	Body          isClientMessage_Body `protobuf_oneof:"body"`
+	Envelope      isClientMessage_Envelope `protobuf_oneof:"envelope"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -77,23 +78,30 @@ func (x *ClientMessage) GetId() string {
 	return ""
 }
 
-func (x *ClientMessage) GetHeaders() map[string]string {
+func (x *ClientMessage) GetMetadata() map[string]string {
 	if x != nil {
-		return x.Headers
+		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ClientMessage) GetBody() isClientMessage_Body {
+func (x *ClientMessage) GetTime() uint64 {
 	if x != nil {
-		return x.Body
+		return x.Time
+	}
+	return 0
+}
+
+func (x *ClientMessage) GetEnvelope() isClientMessage_Envelope {
+	if x != nil {
+		return x.Envelope
 	}
 	return nil
 }
 
 func (x *ClientMessage) GetConnect() *Connect {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_Connect); ok {
+		if x, ok := x.Envelope.(*ClientMessage_Connect); ok {
 			return x.Connect
 		}
 	}
@@ -102,7 +110,7 @@ func (x *ClientMessage) GetConnect() *Connect {
 
 func (x *ClientMessage) GetSubscribe() *Subscribe {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_Subscribe); ok {
+		if x, ok := x.Envelope.(*ClientMessage_Subscribe); ok {
 			return x.Subscribe
 		}
 	}
@@ -111,7 +119,7 @@ func (x *ClientMessage) GetSubscribe() *Subscribe {
 
 func (x *ClientMessage) GetUnsubscribe() *Unsubscribe {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_Unsubscribe); ok {
+		if x, ok := x.Envelope.(*ClientMessage_Unsubscribe); ok {
 			return x.Unsubscribe
 		}
 	}
@@ -120,7 +128,7 @@ func (x *ClientMessage) GetUnsubscribe() *Unsubscribe {
 
 func (x *ClientMessage) GetRpcRequest() *RPCRequest {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_RpcRequest); ok {
+		if x, ok := x.Envelope.(*ClientMessage_RpcRequest); ok {
 			return x.RpcRequest
 		}
 	}
@@ -129,7 +137,7 @@ func (x *ClientMessage) GetRpcRequest() *RPCRequest {
 
 func (x *ClientMessage) GetPing() *Ping {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_Ping); ok {
+		if x, ok := x.Envelope.(*ClientMessage_Ping); ok {
 			return x.Ping
 		}
 	}
@@ -138,7 +146,7 @@ func (x *ClientMessage) GetPing() *Ping {
 
 func (x *ClientMessage) GetPublish() *Publish {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_Publish); ok {
+		if x, ok := x.Envelope.(*ClientMessage_Publish); ok {
 			return x.Publish
 		}
 	}
@@ -147,64 +155,65 @@ func (x *ClientMessage) GetPublish() *Publish {
 
 func (x *ClientMessage) GetSubRefresh() *SubRefresh {
 	if x != nil {
-		if x, ok := x.Body.(*ClientMessage_SubRefresh); ok {
+		if x, ok := x.Envelope.(*ClientMessage_SubRefresh); ok {
 			return x.SubRefresh
 		}
 	}
 	return nil
 }
 
-type isClientMessage_Body interface {
-	isClientMessage_Body()
+type isClientMessage_Envelope interface {
+	isClientMessage_Envelope()
 }
 
 type ClientMessage_Connect struct {
-	Connect *Connect `protobuf:"bytes,3,opt,name=connect,proto3,oneof"`
+	Connect *Connect `protobuf:"bytes,11,opt,name=connect,proto3,oneof"`
 }
 
 type ClientMessage_Subscribe struct {
-	Subscribe *Subscribe `protobuf:"bytes,4,opt,name=subscribe,proto3,oneof"`
+	Subscribe *Subscribe `protobuf:"bytes,12,opt,name=subscribe,proto3,oneof"`
 }
 
 type ClientMessage_Unsubscribe struct {
-	Unsubscribe *Unsubscribe `protobuf:"bytes,5,opt,name=unsubscribe,proto3,oneof"`
+	Unsubscribe *Unsubscribe `protobuf:"bytes,13,opt,name=unsubscribe,proto3,oneof"`
 }
 
 type ClientMessage_RpcRequest struct {
-	RpcRequest *RPCRequest `protobuf:"bytes,6,opt,name=rpc_request,proto3,oneof"`
+	RpcRequest *RPCRequest `protobuf:"bytes,14,opt,name=rpc_request,proto3,oneof"`
 }
 
 type ClientMessage_Ping struct {
-	Ping *Ping `protobuf:"bytes,7,opt,name=ping,proto3,oneof"`
+	Ping *Ping `protobuf:"bytes,15,opt,name=ping,proto3,oneof"`
 }
 
 type ClientMessage_Publish struct {
-	Publish *Publish `protobuf:"bytes,8,opt,name=publish,proto3,oneof"`
+	Publish *Publish `protobuf:"bytes,16,opt,name=publish,proto3,oneof"`
 }
 
 type ClientMessage_SubRefresh struct {
-	SubRefresh *SubRefresh `protobuf:"bytes,9,opt,name=sub_refresh,proto3,oneof"`
+	SubRefresh *SubRefresh `protobuf:"bytes,17,opt,name=sub_refresh,proto3,oneof"`
 }
 
-func (*ClientMessage_Connect) isClientMessage_Body() {}
+func (*ClientMessage_Connect) isClientMessage_Envelope() {}
 
-func (*ClientMessage_Subscribe) isClientMessage_Body() {}
+func (*ClientMessage_Subscribe) isClientMessage_Envelope() {}
 
-func (*ClientMessage_Unsubscribe) isClientMessage_Body() {}
+func (*ClientMessage_Unsubscribe) isClientMessage_Envelope() {}
 
-func (*ClientMessage_RpcRequest) isClientMessage_Body() {}
+func (*ClientMessage_RpcRequest) isClientMessage_Envelope() {}
 
-func (*ClientMessage_Ping) isClientMessage_Body() {}
+func (*ClientMessage_Ping) isClientMessage_Envelope() {}
 
-func (*ClientMessage_Publish) isClientMessage_Body() {}
+func (*ClientMessage_Publish) isClientMessage_Envelope() {}
 
-func (*ClientMessage_SubRefresh) isClientMessage_Body() {}
+func (*ClientMessage_SubRefresh) isClientMessage_Envelope() {}
 
 type ServerMessage struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Id      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Headers map[string]string      `protobuf:"bytes,2,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Types that are valid to be assigned to Body:
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Id       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Metadata map[string]string      `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Time     uint64                 `protobuf:"varint,3,opt,name=time,proto3" json:"time,omitempty"`
+	// Types that are valid to be assigned to Envelope:
 	//
 	//	*ServerMessage_Error
 	//	*ServerMessage_Connected
@@ -215,7 +224,7 @@ type ServerMessage struct {
 	//	*ServerMessage_PublishAck
 	//	*ServerMessage_Publication
 	//	*ServerMessage_SubRefreshAck
-	Body          isServerMessage_Body `protobuf_oneof:"body"`
+	Envelope      isServerMessage_Envelope `protobuf_oneof:"envelope"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -257,23 +266,30 @@ func (x *ServerMessage) GetId() string {
 	return ""
 }
 
-func (x *ServerMessage) GetHeaders() map[string]string {
+func (x *ServerMessage) GetMetadata() map[string]string {
 	if x != nil {
-		return x.Headers
+		return x.Metadata
 	}
 	return nil
 }
 
-func (x *ServerMessage) GetBody() isServerMessage_Body {
+func (x *ServerMessage) GetTime() uint64 {
 	if x != nil {
-		return x.Body
+		return x.Time
+	}
+	return 0
+}
+
+func (x *ServerMessage) GetEnvelope() isServerMessage_Envelope {
+	if x != nil {
+		return x.Envelope
 	}
 	return nil
 }
 
 func (x *ServerMessage) GetError() *v1.Error {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_Error); ok {
+		if x, ok := x.Envelope.(*ServerMessage_Error); ok {
 			return x.Error
 		}
 	}
@@ -282,7 +298,7 @@ func (x *ServerMessage) GetError() *v1.Error {
 
 func (x *ServerMessage) GetConnected() *Connected {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_Connected); ok {
+		if x, ok := x.Envelope.(*ServerMessage_Connected); ok {
 			return x.Connected
 		}
 	}
@@ -291,7 +307,7 @@ func (x *ServerMessage) GetConnected() *Connected {
 
 func (x *ServerMessage) GetSubscribeAck() *SubscribeAck {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_SubscribeAck); ok {
+		if x, ok := x.Envelope.(*ServerMessage_SubscribeAck); ok {
 			return x.SubscribeAck
 		}
 	}
@@ -300,7 +316,7 @@ func (x *ServerMessage) GetSubscribeAck() *SubscribeAck {
 
 func (x *ServerMessage) GetUnsubscribeAck() *UnsubscribeAck {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_UnsubscribeAck); ok {
+		if x, ok := x.Envelope.(*ServerMessage_UnsubscribeAck); ok {
 			return x.UnsubscribeAck
 		}
 	}
@@ -309,7 +325,7 @@ func (x *ServerMessage) GetUnsubscribeAck() *UnsubscribeAck {
 
 func (x *ServerMessage) GetRpcReply() *RPCReply {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_RpcReply); ok {
+		if x, ok := x.Envelope.(*ServerMessage_RpcReply); ok {
 			return x.RpcReply
 		}
 	}
@@ -318,7 +334,7 @@ func (x *ServerMessage) GetRpcReply() *RPCReply {
 
 func (x *ServerMessage) GetPong() *Pong {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_Pong); ok {
+		if x, ok := x.Envelope.(*ServerMessage_Pong); ok {
 			return x.Pong
 		}
 	}
@@ -327,7 +343,7 @@ func (x *ServerMessage) GetPong() *Pong {
 
 func (x *ServerMessage) GetPublishAck() *PublishAck {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_PublishAck); ok {
+		if x, ok := x.Envelope.(*ServerMessage_PublishAck); ok {
 			return x.PublishAck
 		}
 	}
@@ -336,7 +352,7 @@ func (x *ServerMessage) GetPublishAck() *PublishAck {
 
 func (x *ServerMessage) GetPublication() *Publication {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_Publication); ok {
+		if x, ok := x.Envelope.(*ServerMessage_Publication); ok {
 			return x.Publication
 		}
 	}
@@ -345,70 +361,70 @@ func (x *ServerMessage) GetPublication() *Publication {
 
 func (x *ServerMessage) GetSubRefreshAck() *SubRefreshAck {
 	if x != nil {
-		if x, ok := x.Body.(*ServerMessage_SubRefreshAck); ok {
+		if x, ok := x.Envelope.(*ServerMessage_SubRefreshAck); ok {
 			return x.SubRefreshAck
 		}
 	}
 	return nil
 }
 
-type isServerMessage_Body interface {
-	isServerMessage_Body()
+type isServerMessage_Envelope interface {
+	isServerMessage_Envelope()
 }
 
 type ServerMessage_Error struct {
-	Error *v1.Error `protobuf:"bytes,3,opt,name=error,proto3,oneof"`
+	Error *v1.Error `protobuf:"bytes,11,opt,name=error,proto3,oneof"`
 }
 
 type ServerMessage_Connected struct {
-	Connected *Connected `protobuf:"bytes,4,opt,name=connected,proto3,oneof"`
+	Connected *Connected `protobuf:"bytes,12,opt,name=connected,proto3,oneof"`
 }
 
 type ServerMessage_SubscribeAck struct {
-	SubscribeAck *SubscribeAck `protobuf:"bytes,5,opt,name=subscribe_ack,proto3,oneof"`
+	SubscribeAck *SubscribeAck `protobuf:"bytes,13,opt,name=subscribe_ack,proto3,oneof"`
 }
 
 type ServerMessage_UnsubscribeAck struct {
-	UnsubscribeAck *UnsubscribeAck `protobuf:"bytes,6,opt,name=unsubscribe_ack,proto3,oneof"`
+	UnsubscribeAck *UnsubscribeAck `protobuf:"bytes,14,opt,name=unsubscribe_ack,proto3,oneof"`
 }
 
 type ServerMessage_RpcReply struct {
-	RpcReply *RPCReply `protobuf:"bytes,7,opt,name=rpc_reply,proto3,oneof"`
+	RpcReply *RPCReply `protobuf:"bytes,15,opt,name=rpc_reply,proto3,oneof"`
 }
 
 type ServerMessage_Pong struct {
-	Pong *Pong `protobuf:"bytes,8,opt,name=pong,proto3,oneof"`
+	Pong *Pong `protobuf:"bytes,16,opt,name=pong,proto3,oneof"`
 }
 
 type ServerMessage_PublishAck struct {
-	PublishAck *PublishAck `protobuf:"bytes,9,opt,name=publish_ack,proto3,oneof"`
+	PublishAck *PublishAck `protobuf:"bytes,17,opt,name=publish_ack,proto3,oneof"`
 }
 
 type ServerMessage_Publication struct {
-	Publication *Publication `protobuf:"bytes,10,opt,name=publication,proto3,oneof"`
+	Publication *Publication `protobuf:"bytes,18,opt,name=publication,proto3,oneof"`
 }
 
 type ServerMessage_SubRefreshAck struct {
-	SubRefreshAck *SubRefreshAck `protobuf:"bytes,11,opt,name=sub_refresh_ack,proto3,oneof"`
+	SubRefreshAck *SubRefreshAck `protobuf:"bytes,19,opt,name=sub_refresh_ack,proto3,oneof"`
 }
 
-func (*ServerMessage_Error) isServerMessage_Body() {}
+func (*ServerMessage_Error) isServerMessage_Envelope() {}
 
-func (*ServerMessage_Connected) isServerMessage_Body() {}
+func (*ServerMessage_Connected) isServerMessage_Envelope() {}
 
-func (*ServerMessage_SubscribeAck) isServerMessage_Body() {}
+func (*ServerMessage_SubscribeAck) isServerMessage_Envelope() {}
 
-func (*ServerMessage_UnsubscribeAck) isServerMessage_Body() {}
+func (*ServerMessage_UnsubscribeAck) isServerMessage_Envelope() {}
 
-func (*ServerMessage_RpcReply) isServerMessage_Body() {}
+func (*ServerMessage_RpcReply) isServerMessage_Envelope() {}
 
-func (*ServerMessage_Pong) isServerMessage_Body() {}
+func (*ServerMessage_Pong) isServerMessage_Envelope() {}
 
-func (*ServerMessage_PublishAck) isServerMessage_Body() {}
+func (*ServerMessage_PublishAck) isServerMessage_Envelope() {}
 
-func (*ServerMessage_Publication) isServerMessage_Body() {}
+func (*ServerMessage_Publication) isServerMessage_Envelope() {}
 
-func (*ServerMessage_SubRefreshAck) isServerMessage_Body() {}
+func (*ServerMessage_SubRefreshAck) isServerMessage_Envelope() {}
 
 type Connect struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -417,7 +433,6 @@ type Connect struct {
 	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 	Version       string                 `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"`
 	Subscriptions []*Subscription        `protobuf:"bytes,5,rep,name=subscriptions,proto3" json:"subscriptions,omitempty"`
-	Metadata      map[string]string      `protobuf:"bytes,6,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -487,18 +502,10 @@ func (x *Connect) GetSubscriptions() []*Subscription {
 	return nil
 }
 
-func (x *Connect) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 type RPCRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
-	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
 	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -547,13 +554,6 @@ func (x *RPCRequest) GetMethod() string {
 		return x.Method
 	}
 	return ""
-}
-
-func (x *RPCRequest) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
 }
 
 func (x *RPCRequest) GetPayloadBytes() []byte {
@@ -1358,58 +1358,53 @@ var File_client_v1_client_proto protoreflect.FileDescriptor
 
 const file_client_v1_client_proto_rawDesc = "" +
 	"\n" +
-	"\x16client/v1/client.proto\x12\x15messageloop.client.v1\x1a\x16shared/v1/errors.proto\"\xf3\x04\n" +
+	"\x16client/v1/client.proto\x12\x15messageloop.client.v1\x1a\x16shared/v1/errors.proto\"\x8f\x05\n" +
 	"\rClientMessage\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12K\n" +
-	"\aheaders\x18\x02 \x03(\v21.messageloop.client.v1.ClientMessage.HeadersEntryR\aheaders\x12:\n" +
-	"\aconnect\x18\x03 \x01(\v2\x1e.messageloop.client.v1.ConnectH\x00R\aconnect\x12@\n" +
-	"\tsubscribe\x18\x04 \x01(\v2 .messageloop.client.v1.SubscribeH\x00R\tsubscribe\x12F\n" +
-	"\vunsubscribe\x18\x05 \x01(\v2\".messageloop.client.v1.UnsubscribeH\x00R\vunsubscribe\x12E\n" +
-	"\vrpc_request\x18\x06 \x01(\v2!.messageloop.client.v1.RPCRequestH\x00R\vrpc_request\x121\n" +
-	"\x04ping\x18\a \x01(\v2\x1b.messageloop.client.v1.PingH\x00R\x04ping\x12:\n" +
-	"\apublish\x18\b \x01(\v2\x1e.messageloop.client.v1.PublishH\x00R\apublish\x12E\n" +
-	"\vsub_refresh\x18\t \x01(\v2!.messageloop.client.v1.SubRefreshH\x00R\vsub_refresh\x1a:\n" +
-	"\fHeadersEntry\x12\x10\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12N\n" +
+	"\bmetadata\x18\x02 \x03(\v22.messageloop.client.v1.ClientMessage.MetadataEntryR\bmetadata\x12\x12\n" +
+	"\x04time\x18\x03 \x01(\x04R\x04time\x12:\n" +
+	"\aconnect\x18\v \x01(\v2\x1e.messageloop.client.v1.ConnectH\x00R\aconnect\x12@\n" +
+	"\tsubscribe\x18\f \x01(\v2 .messageloop.client.v1.SubscribeH\x00R\tsubscribe\x12F\n" +
+	"\vunsubscribe\x18\r \x01(\v2\".messageloop.client.v1.UnsubscribeH\x00R\vunsubscribe\x12E\n" +
+	"\vrpc_request\x18\x0e \x01(\v2!.messageloop.client.v1.RPCRequestH\x00R\vrpc_request\x121\n" +
+	"\x04ping\x18\x0f \x01(\v2\x1b.messageloop.client.v1.PingH\x00R\x04ping\x12:\n" +
+	"\apublish\x18\x10 \x01(\v2\x1e.messageloop.client.v1.PublishH\x00R\apublish\x12E\n" +
+	"\vsub_refresh\x18\x11 \x01(\v2!.messageloop.client.v1.SubRefreshH\x00R\vsub_refresh\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x06\n" +
-	"\x04body\"\x9d\x06\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
+	"\n" +
+	"\benvelope\"\xb9\x06\n" +
 	"\rServerMessage\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12K\n" +
-	"\aheaders\x18\x02 \x03(\v21.messageloop.client.v1.ServerMessage.HeadersEntryR\aheaders\x124\n" +
-	"\x05error\x18\x03 \x01(\v2\x1c.messageloop.shared.v1.ErrorH\x00R\x05error\x12@\n" +
-	"\tconnected\x18\x04 \x01(\v2 .messageloop.client.v1.ConnectedH\x00R\tconnected\x12K\n" +
-	"\rsubscribe_ack\x18\x05 \x01(\v2#.messageloop.client.v1.SubscribeAckH\x00R\rsubscribe_ack\x12Q\n" +
-	"\x0funsubscribe_ack\x18\x06 \x01(\v2%.messageloop.client.v1.UnsubscribeAckH\x00R\x0funsubscribe_ack\x12?\n" +
-	"\trpc_reply\x18\a \x01(\v2\x1f.messageloop.client.v1.RPCReplyH\x00R\trpc_reply\x121\n" +
-	"\x04pong\x18\b \x01(\v2\x1b.messageloop.client.v1.PongH\x00R\x04pong\x12E\n" +
-	"\vpublish_ack\x18\t \x01(\v2!.messageloop.client.v1.PublishAckH\x00R\vpublish_ack\x12F\n" +
-	"\vpublication\x18\n" +
-	" \x01(\v2\".messageloop.client.v1.PublicationH\x00R\vpublication\x12P\n" +
-	"\x0fsub_refresh_ack\x18\v \x01(\v2$.messageloop.client.v1.SubRefreshAckH\x00R\x0fsub_refresh_ack\x1a:\n" +
-	"\fHeadersEntry\x12\x10\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12N\n" +
+	"\bmetadata\x18\x02 \x03(\v22.messageloop.client.v1.ServerMessage.MetadataEntryR\bmetadata\x12\x12\n" +
+	"\x04time\x18\x03 \x01(\x04R\x04time\x124\n" +
+	"\x05error\x18\v \x01(\v2\x1c.messageloop.shared.v1.ErrorH\x00R\x05error\x12@\n" +
+	"\tconnected\x18\f \x01(\v2 .messageloop.client.v1.ConnectedH\x00R\tconnected\x12K\n" +
+	"\rsubscribe_ack\x18\r \x01(\v2#.messageloop.client.v1.SubscribeAckH\x00R\rsubscribe_ack\x12Q\n" +
+	"\x0funsubscribe_ack\x18\x0e \x01(\v2%.messageloop.client.v1.UnsubscribeAckH\x00R\x0funsubscribe_ack\x12?\n" +
+	"\trpc_reply\x18\x0f \x01(\v2\x1f.messageloop.client.v1.RPCReplyH\x00R\trpc_reply\x121\n" +
+	"\x04pong\x18\x10 \x01(\v2\x1b.messageloop.client.v1.PongH\x00R\x04pong\x12E\n" +
+	"\vpublish_ack\x18\x11 \x01(\v2!.messageloop.client.v1.PublishAckH\x00R\vpublish_ack\x12F\n" +
+	"\vpublication\x18\x12 \x01(\v2\".messageloop.client.v1.PublicationH\x00R\vpublication\x12P\n" +
+	"\x0fsub_refresh_ack\x18\x13 \x01(\v2$.messageloop.client.v1.SubRefreshAckH\x00R\x0fsub_refresh_ack\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x06\n" +
-	"\x04body\"\xcb\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\n" +
+	"\n" +
+	"\benvelope\"\xc4\x01\n" +
 	"\aConnect\x12\x1c\n" +
 	"\tclient_id\x18\x01 \x01(\tR\tclient_id\x12 \n" +
 	"\vclient_type\x18\x02 \x01(\tR\vclient_type\x12\x14\n" +
 	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
 	"\aversion\x18\x04 \x01(\tR\aversion\x12I\n" +
-	"\rsubscriptions\x18\x05 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\x12H\n" +
-	"\bmetadata\x18\x06 \x03(\v2,.messageloop.client.v1.Connect.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x96\x02\n" +
+	"\rsubscriptions\x18\x05 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"\x8c\x01\n" +
 	"\n" +
 	"RPCRequest\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +
-	"\x06method\x18\x02 \x01(\tR\x06method\x12K\n" +
-	"\bmetadata\x18\x03 \x03(\v2/.messageloop.client.v1.RPCRequest.MetadataEntryR\bmetadata\x12$\n" +
+	"\x06method\x18\x02 \x01(\tR\x06method\x12$\n" +
 	"\rpayload_bytes\x18\x04 \x01(\fR\rpayload_bytes\x12&\n" +
-	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8c\x01\n" +
+	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\"\x8c\x01\n" +
 	"\bRPCReply\x122\n" +
 	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12$\n" +
 	"\rpayload_bytes\x18\x02 \x01(\fR\rpayload_bytes\x12&\n" +
@@ -1473,7 +1468,7 @@ func file_client_v1_client_proto_rawDescGZIP() []byte {
 	return file_client_v1_client_proto_rawDescData
 }
 
-var file_client_v1_client_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_client_v1_client_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_client_v1_client_proto_goTypes = []any{
 	(*ClientMessage)(nil),  // 0: messageloop.client.v1.ClientMessage
 	(*ServerMessage)(nil),  // 1: messageloop.client.v1.ServerMessage
@@ -1495,14 +1490,12 @@ var file_client_v1_client_proto_goTypes = []any{
 	(*PublishAck)(nil),     // 17: messageloop.client.v1.PublishAck
 	(*SubRefresh)(nil),     // 18: messageloop.client.v1.SubRefresh
 	(*SubRefreshAck)(nil),  // 19: messageloop.client.v1.SubRefreshAck
-	nil,                    // 20: messageloop.client.v1.ClientMessage.HeadersEntry
-	nil,                    // 21: messageloop.client.v1.ServerMessage.HeadersEntry
-	nil,                    // 22: messageloop.client.v1.Connect.MetadataEntry
-	nil,                    // 23: messageloop.client.v1.RPCRequest.MetadataEntry
-	(*v1.Error)(nil),       // 24: messageloop.shared.v1.Error
+	nil,                    // 20: messageloop.client.v1.ClientMessage.MetadataEntry
+	nil,                    // 21: messageloop.client.v1.ServerMessage.MetadataEntry
+	(*v1.Error)(nil),       // 22: messageloop.shared.v1.Error
 }
 var file_client_v1_client_proto_depIdxs = []int32{
-	20, // 0: messageloop.client.v1.ClientMessage.headers:type_name -> messageloop.client.v1.ClientMessage.HeadersEntry
+	20, // 0: messageloop.client.v1.ClientMessage.metadata:type_name -> messageloop.client.v1.ClientMessage.MetadataEntry
 	2,  // 1: messageloop.client.v1.ClientMessage.connect:type_name -> messageloop.client.v1.Connect
 	9,  // 2: messageloop.client.v1.ClientMessage.subscribe:type_name -> messageloop.client.v1.Subscribe
 	11, // 3: messageloop.client.v1.ClientMessage.unsubscribe:type_name -> messageloop.client.v1.Unsubscribe
@@ -1510,8 +1503,8 @@ var file_client_v1_client_proto_depIdxs = []int32{
 	14, // 5: messageloop.client.v1.ClientMessage.ping:type_name -> messageloop.client.v1.Ping
 	16, // 6: messageloop.client.v1.ClientMessage.publish:type_name -> messageloop.client.v1.Publish
 	18, // 7: messageloop.client.v1.ClientMessage.sub_refresh:type_name -> messageloop.client.v1.SubRefresh
-	21, // 8: messageloop.client.v1.ServerMessage.headers:type_name -> messageloop.client.v1.ServerMessage.HeadersEntry
-	24, // 9: messageloop.client.v1.ServerMessage.error:type_name -> messageloop.shared.v1.Error
+	21, // 8: messageloop.client.v1.ServerMessage.metadata:type_name -> messageloop.client.v1.ServerMessage.MetadataEntry
+	22, // 9: messageloop.client.v1.ServerMessage.error:type_name -> messageloop.shared.v1.Error
 	7,  // 10: messageloop.client.v1.ServerMessage.connected:type_name -> messageloop.client.v1.Connected
 	10, // 11: messageloop.client.v1.ServerMessage.subscribe_ack:type_name -> messageloop.client.v1.SubscribeAck
 	12, // 12: messageloop.client.v1.ServerMessage.unsubscribe_ack:type_name -> messageloop.client.v1.UnsubscribeAck
@@ -1521,24 +1514,22 @@ var file_client_v1_client_proto_depIdxs = []int32{
 	6,  // 16: messageloop.client.v1.ServerMessage.publication:type_name -> messageloop.client.v1.Publication
 	19, // 17: messageloop.client.v1.ServerMessage.sub_refresh_ack:type_name -> messageloop.client.v1.SubRefreshAck
 	8,  // 18: messageloop.client.v1.Connect.subscriptions:type_name -> messageloop.client.v1.Subscription
-	22, // 19: messageloop.client.v1.Connect.metadata:type_name -> messageloop.client.v1.Connect.MetadataEntry
-	23, // 20: messageloop.client.v1.RPCRequest.metadata:type_name -> messageloop.client.v1.RPCRequest.MetadataEntry
-	24, // 21: messageloop.client.v1.RPCReply.error:type_name -> messageloop.shared.v1.Error
-	5,  // 22: messageloop.client.v1.Publication.messages:type_name -> messageloop.client.v1.Message
-	8,  // 23: messageloop.client.v1.Connected.subscriptions:type_name -> messageloop.client.v1.Subscription
-	6,  // 24: messageloop.client.v1.Connected.publications:type_name -> messageloop.client.v1.Publication
-	8,  // 25: messageloop.client.v1.Subscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
-	8,  // 26: messageloop.client.v1.SubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
-	8,  // 27: messageloop.client.v1.Unsubscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
-	8,  // 28: messageloop.client.v1.UnsubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
-	8,  // 29: messageloop.client.v1.RefreshSub.subscriptions:type_name -> messageloop.client.v1.Subscription
-	0,  // 30: messageloop.client.v1.MessageLoopService.MessageLoop:input_type -> messageloop.client.v1.ClientMessage
-	1,  // 31: messageloop.client.v1.MessageLoopService.MessageLoop:output_type -> messageloop.client.v1.ServerMessage
-	31, // [31:32] is the sub-list for method output_type
-	30, // [30:31] is the sub-list for method input_type
-	30, // [30:30] is the sub-list for extension type_name
-	30, // [30:30] is the sub-list for extension extendee
-	0,  // [0:30] is the sub-list for field type_name
+	22, // 19: messageloop.client.v1.RPCReply.error:type_name -> messageloop.shared.v1.Error
+	5,  // 20: messageloop.client.v1.Publication.messages:type_name -> messageloop.client.v1.Message
+	8,  // 21: messageloop.client.v1.Connected.subscriptions:type_name -> messageloop.client.v1.Subscription
+	6,  // 22: messageloop.client.v1.Connected.publications:type_name -> messageloop.client.v1.Publication
+	8,  // 23: messageloop.client.v1.Subscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 24: messageloop.client.v1.SubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 25: messageloop.client.v1.Unsubscribe.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 26: messageloop.client.v1.UnsubscribeAck.subscriptions:type_name -> messageloop.client.v1.Subscription
+	8,  // 27: messageloop.client.v1.RefreshSub.subscriptions:type_name -> messageloop.client.v1.Subscription
+	0,  // 28: messageloop.client.v1.MessageLoopService.MessageLoop:input_type -> messageloop.client.v1.ClientMessage
+	1,  // 29: messageloop.client.v1.MessageLoopService.MessageLoop:output_type -> messageloop.client.v1.ServerMessage
+	29, // [29:30] is the sub-list for method output_type
+	28, // [28:29] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_client_v1_client_proto_init() }
@@ -1572,7 +1563,7 @@ func file_client_v1_client_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_client_v1_client_proto_rawDesc), len(file_client_v1_client_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
