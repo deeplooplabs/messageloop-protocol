@@ -1,4 +1,4 @@
-module github.com/deeploopdev/messageloop-protocol
+module github.com/deeplooplabs/messageloop-protocol
 
 go 1.24.3
 

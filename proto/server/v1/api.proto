@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messageloop.server.v1;
 
-option go_package = "github.com/deeploopdev/messageloop-protocol/gen/proto/go/server/v1;serverpb";
+option go_package = "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/server/v1;serverpb";
 
 service APIService {
   rpc Publish(PublishRequest) returns(PublishReply);

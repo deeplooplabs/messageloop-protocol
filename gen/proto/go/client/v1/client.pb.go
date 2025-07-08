@@ -7,7 +7,7 @@
 package clientv1
 
 import (
-	v1 "github.com/deeploopdev/messageloop-protocol/gen/proto/go/shared/v1"
+	v1 "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/shared/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1454,7 +1454,7 @@ const file_client_v1_client_proto_rawDesc = "" +
 	"\rSubRefreshAck2s\n" +
 	"\x12MessageLoopService\x12]\n" +
 	"\vMessageLoop\x12$.messageloop.client.v1.ClientMessage\x1a$.messageloop.client.v1.ServerMessage(\x010\x01B\xeb\x01\n" +
-	"\x19com.messageloop.client.v1B\vClientProtoP\x01ZKgithub.com/deeploopdev/messageloop-protocol/gen/proto/go/client/v1;clientv1\xa2\x02\x03MCX\xaa\x02\x15Messageloop.Client.V1\xca\x02\x15Messageloop\\Client\\V1\xe2\x02!Messageloop\\Client\\V1\\GPBMetadata\xea\x02\x17Messageloop::Client::V1b\x06proto3"
+	"\x19com.messageloop.client.v1B\vClientProtoP\x01ZKgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/client/v1;clientv1\xa2\x02\x03MCX\xaa\x02\x15Messageloop.Client.V1\xca\x02\x15Messageloop\\Client\\V1\xe2\x02!Messageloop\\Client\\V1\\GPBMetadata\xea\x02\x17Messageloop::Client::V1b\x06proto3"
 
 var (
 	file_client_v1_client_proto_rawDescOnce sync.Once

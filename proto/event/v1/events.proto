@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messageloop.event.v1;
 
-option go_package = "github.com/deeploopdev/messageloop-protocol/gen/proto/go/event/v1;eventpb";
+option go_package = "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/event/v1;eventpb";
 
 message PublishEvent {
   string channel = 1;

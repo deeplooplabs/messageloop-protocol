@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messageloop.proxy.v1;
 
-option go_package = "github.com/deeploopdev/messageloop-protocol/gen/proto/go/proxy/v1;proxypb";
+option go_package = "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/proxy/v1;proxypb";
 
 import "shared/v1/errors.proto";
 

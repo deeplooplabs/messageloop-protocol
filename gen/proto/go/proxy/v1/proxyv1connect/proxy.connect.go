@@ -8,7 +8,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	v1 "github.com/deeploopdev/messageloop-protocol/gen/proto/go/proxy/v1"
+	v1 "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/proxy/v1"
 	http "net/http"
 	strings "strings"
 )

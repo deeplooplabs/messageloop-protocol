@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package messageloop.client.v1;
 
-option go_package = "github.com/deeploopdev/messageloop-protocol/gen/proto/go/client/v1;clientpb";
+option go_package = "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/client/v1;clientpb";
 
 import "shared/v1/errors.proto";
 

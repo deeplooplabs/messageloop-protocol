@@ -544,7 +544,7 @@ const file_server_v1_api_proto_rawDesc = "" +
 	"Disconnect\x12(.messageloop.server.v1.DisconnectRequest\x1a&.messageloop.server.v1.DisconnectReply\x12[\n" +
 	"\tSubscribe\x12'.messageloop.server.v1.SubscribeRequest\x1a%.messageloop.server.v1.SubscribeReply\x12_\n" +
 	"\vUnsubscribe\x12'.messageloop.server.v1.SubscribeRequest\x1a'.messageloop.server.v1.UnsubscribeReplyB\xe8\x01\n" +
-	"\x19com.messageloop.server.v1B\bApiProtoP\x01ZKgithub.com/deeploopdev/messageloop-protocol/gen/proto/go/server/v1;serverv1\xa2\x02\x03MSX\xaa\x02\x15Messageloop.Server.V1\xca\x02\x15Messageloop\\Server\\V1\xe2\x02!Messageloop\\Server\\V1\\GPBMetadata\xea\x02\x17Messageloop::Server::V1b\x06proto3"
+	"\x19com.messageloop.server.v1B\bApiProtoP\x01ZKgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/server/v1;serverv1\xa2\x02\x03MSX\xaa\x02\x15Messageloop.Server.V1\xca\x02\x15Messageloop\\Server\\V1\xe2\x02!Messageloop\\Server\\V1\\GPBMetadata\xea\x02\x17Messageloop::Server::V1b\x06proto3"
 
 var (
 	file_server_v1_api_proto_rawDescOnce sync.Once
