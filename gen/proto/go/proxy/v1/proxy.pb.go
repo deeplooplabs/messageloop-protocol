@@ -828,9 +828,9 @@ const file_proxy_v1_proxy_proto_rawDesc = "" +
 	"\vOnConnected\x12(.messageloop.proxy.v1.OnConnectedRequest\x1a&.messageloop.proxy.v1.OnConnectedReply\x12b\n" +
 	"\fOnSubscribed\x12).messageloop.proxy.v1.OnSubscribedRequest\x1a'.messageloop.proxy.v1.OnSubscribedReply\x12h\n" +
 	"\x0eOnUnsubscribed\x12+.messageloop.proxy.v1.OnUnsubscribedRequest\x1a).messageloop.proxy.v1.OnUnsubscribedReply\x12h\n" +
-	"\x0eOnDisconnected\x12+.messageloop.proxy.v1.OnDisconnectedRequest\x1a).messageloop.proxy.v1.OnDisconnectedReplyB\xe3\x01\n" +
+	"\x0eOnDisconnected\x12+.messageloop.proxy.v1.OnDisconnectedRequest\x1a).messageloop.proxy.v1.OnDisconnectedReplyB\xe4\x01\n" +
 	"\x18com.messageloop.proxy.v1B\n" +
-	"ProxyProtoP\x01ZIgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/proxy/v1;proxyv1\xa2\x02\x03MPX\xaa\x02\x14Messageloop.Proxy.V1\xca\x02\x14Messageloop\\Proxy\\V1\xe2\x02 Messageloop\\Proxy\\V1\\GPBMetadata\xea\x02\x16Messageloop::Proxy::V1b\x06proto3"
+	"ProxyProtoP\x01ZJgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/proxy/v1;proxyv1\xa2\x02\x03MPX\xaa\x02\x14Messageloop.Proxy.V1\xca\x02\x14Messageloop\\Proxy\\V1\xe2\x02 Messageloop\\Proxy\\V1\\GPBMetadata\xea\x02\x16Messageloop::Proxy::V1b\x06proto3"
 
 var (
 	file_proxy_v1_proxy_proto_rawDescOnce sync.Once

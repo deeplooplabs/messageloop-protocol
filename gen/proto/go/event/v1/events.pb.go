@@ -80,8 +80,8 @@ const file_event_v1_events_proto_rawDesc = "" +
 	"\x15event/v1/events.proto\x12\x14messageloop.event.v1\"B\n" +
 	"\fPublishEvent\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayloadB\xe4\x01\n" +
-	"\x18com.messageloop.event.v1B\vEventsProtoP\x01ZIgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/event/v1;eventv1\xa2\x02\x03MEX\xaa\x02\x14Messageloop.Event.V1\xca\x02\x14Messageloop\\Event\\V1\xe2\x02 Messageloop\\Event\\V1\\GPBMetadata\xea\x02\x16Messageloop::Event::V1b\x06proto3"
+	"\apayload\x18\x02 \x01(\fR\apayloadB\xe5\x01\n" +
+	"\x18com.messageloop.event.v1B\vEventsProtoP\x01ZJgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/event/v1;eventv1\xa2\x02\x03MEX\xaa\x02\x14Messageloop.Event.V1\xca\x02\x14Messageloop\\Event\\V1\xe2\x02 Messageloop\\Event\\V1\\GPBMetadata\xea\x02\x16Messageloop::Event::V1b\x06proto3"
 
 var (
 	file_event_v1_events_proto_rawDescOnce sync.Once
