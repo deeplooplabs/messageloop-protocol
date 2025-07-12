@@ -1,3 +1,3 @@
-package deeploop
+package protocol
 
 //go:generate buf generate
