@@ -506,8 +506,8 @@ type RPCRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
+	PayloadBlob   []byte                 `protobuf:"bytes,4,opt,name=payload_blob,proto3" json:"payload_blob,omitempty"`
+	Payload       string                 `protobuf:"bytes,5,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -556,16 +556,16 @@ func (x *RPCRequest) GetMethod() string {
 	return ""
 }
 
-func (x *RPCRequest) GetPayloadBytes() []byte {
+func (x *RPCRequest) GetPayloadBlob() []byte {
 	if x != nil {
-		return x.PayloadBytes
+		return x.PayloadBlob
 	}
 	return nil
 }
 
-func (x *RPCRequest) GetPayloadString() string {
+func (x *RPCRequest) GetPayload() string {
 	if x != nil {
-		return x.PayloadString
+		return x.Payload
 	}
 	return ""
 }
@@ -573,8 +573,8 @@ func (x *RPCRequest) GetPayloadString() string {
 type RPCReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Error         *v1.Error              `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
+	PayloadBlob   []byte                 `protobuf:"bytes,2,opt,name=payload_blob,proto3" json:"payload_blob,omitempty"`
+	Payload       string                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -616,16 +616,16 @@ func (x *RPCReply) GetError() *v1.Error {
 	return nil
 }
 
-func (x *RPCReply) GetPayloadBytes() []byte {
+func (x *RPCReply) GetPayloadBlob() []byte {
 	if x != nil {
-		return x.PayloadBytes
+		return x.PayloadBlob
 	}
 	return nil
 }
 
-func (x *RPCReply) GetPayloadString() string {
+func (x *RPCReply) GetPayload() string {
 	if x != nil {
-		return x.PayloadString
+		return x.Payload
 	}
 	return ""
 }
@@ -635,8 +635,8 @@ type Message struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
 	Offset        uint64                 `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,4,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,5,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
+	PayloadBlob   []byte                 `protobuf:"bytes,4,opt,name=payload_blob,proto3" json:"payload_blob,omitempty"`
+	Payload       string                 `protobuf:"bytes,5,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -692,16 +692,16 @@ func (x *Message) GetOffset() uint64 {
 	return 0
 }
 
-func (x *Message) GetPayloadBytes() []byte {
+func (x *Message) GetPayloadBlob() []byte {
 	if x != nil {
-		return x.PayloadBytes
+		return x.PayloadBlob
 	}
 	return nil
 }
 
-func (x *Message) GetPayloadString() string {
+func (x *Message) GetPayload() string {
 	if x != nil {
-		return x.PayloadString
+		return x.Payload
 	}
 	return ""
 }
@@ -1165,8 +1165,8 @@ func (*Pong) Descriptor() ([]byte, []int) {
 type Publish struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	PayloadBytes  []byte                 `protobuf:"bytes,2,opt,name=payload_bytes,proto3" json:"payload_bytes,omitempty"`
-	PayloadString string                 `protobuf:"bytes,3,opt,name=payload_string,proto3" json:"payload_string,omitempty"`
+	PayloadBlob   []byte                 `protobuf:"bytes,2,opt,name=payload_blob,proto3" json:"payload_blob,omitempty"`
+	Payload       string                 `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1208,16 +1208,16 @@ func (x *Publish) GetChannel() string {
 	return ""
 }
 
-func (x *Publish) GetPayloadBytes() []byte {
+func (x *Publish) GetPayloadBlob() []byte {
 	if x != nil {
-		return x.PayloadBytes
+		return x.PayloadBlob
 	}
 	return nil
 }
 
-func (x *Publish) GetPayloadString() string {
+func (x *Publish) GetPayload() string {
 	if x != nil {
-		return x.PayloadString
+		return x.Payload
 	}
 	return ""
 }
@@ -1398,23 +1398,23 @@ const file_client_v1_client_proto_rawDesc = "" +
 	"\vclient_type\x18\x02 \x01(\tR\vclient_type\x12\x14\n" +
 	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
 	"\aversion\x18\x04 \x01(\tR\aversion\x12I\n" +
-	"\rsubscriptions\x18\x05 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"\x8c\x01\n" +
+	"\rsubscriptions\x18\x05 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"|\n" +
 	"\n" +
 	"RPCRequest\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +
-	"\x06method\x18\x02 \x01(\tR\x06method\x12$\n" +
-	"\rpayload_bytes\x18\x04 \x01(\fR\rpayload_bytes\x12&\n" +
-	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\"\x8c\x01\n" +
+	"\x06method\x18\x02 \x01(\tR\x06method\x12\"\n" +
+	"\fpayload_blob\x18\x04 \x01(\fR\fpayload_blob\x12\x18\n" +
+	"\apayload\x18\x05 \x01(\tR\apayload\"|\n" +
 	"\bRPCReply\x122\n" +
-	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12$\n" +
-	"\rpayload_bytes\x18\x02 \x01(\fR\rpayload_bytes\x12&\n" +
-	"\x0epayload_string\x18\x03 \x01(\tR\x0epayload_string\"\x99\x01\n" +
+	"\x05error\x18\x01 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12\"\n" +
+	"\fpayload_blob\x18\x02 \x01(\fR\fpayload_blob\x12\x18\n" +
+	"\apayload\x18\x03 \x01(\tR\apayload\"\x89\x01\n" +
 	"\aMessage\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\achannel\x18\x02 \x01(\tR\achannel\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12$\n" +
-	"\rpayload_bytes\x18\x04 \x01(\fR\rpayload_bytes\x12&\n" +
-	"\x0epayload_string\x18\x05 \x01(\tR\x0epayload_string\"I\n" +
+	"\x06offset\x18\x03 \x01(\x04R\x06offset\x12\"\n" +
+	"\fpayload_blob\x18\x04 \x01(\fR\fpayload_blob\x12\x18\n" +
+	"\apayload\x18\x05 \x01(\tR\apayload\"I\n" +
 	"\vPublication\x12:\n" +
 	"\bmessages\x18\x03 \x03(\v2\x1e.messageloop.client.v1.MessageR\bmessages\"\xbe\x01\n" +
 	"\tConnected\x12\x1e\n" +
@@ -1439,11 +1439,11 @@ const file_client_v1_client_proto_rawDesc = "" +
 	"RefreshSub\x12I\n" +
 	"\rsubscriptions\x18\x01 \x03(\v2#.messageloop.client.v1.SubscriptionR\rsubscriptions\"\x06\n" +
 	"\x04Ping\"\x06\n" +
-	"\x04Pong\"q\n" +
+	"\x04Pong\"a\n" +
 	"\aPublish\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12$\n" +
-	"\rpayload_bytes\x18\x02 \x01(\fR\rpayload_bytes\x12&\n" +
-	"\x0epayload_string\x18\x03 \x01(\tR\x0epayload_string\">\n" +
+	"\achannel\x18\x01 \x01(\tR\achannel\x12\"\n" +
+	"\fpayload_blob\x18\x02 \x01(\fR\fpayload_blob\x12\x18\n" +
+	"\apayload\x18\x03 \x01(\tR\apayload\">\n" +
 	"\n" +
 	"PublishAck\x12\x18\n" +
 	"\achannel\x18\x01 \x01(\tR\achannel\x12\x16\n" +

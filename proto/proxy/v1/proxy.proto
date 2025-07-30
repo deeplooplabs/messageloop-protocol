@@ -28,15 +28,15 @@ message RPCRequest {
   string id = 1;
   string channel = 2;
   string method = 3;
-  bytes payload_bytes = 5;
-  string payload_string = 6;
+  bytes payload_blob = 5;
+  string payload = 6;
 }
 
 message RPCReply {
   string id = 1;
   shared.v1.Error error = 2;
-  bytes payload_bytes = 3;
-  string payload_string = 4;
+  bytes payload_blob = 3;
+  string payload = 4;
 }
 
 message AuthenticateRequest {

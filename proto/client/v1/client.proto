@@ -54,22 +54,22 @@ message Connect {
 message RPCRequest {
   string channel = 1;
   string method = 2;
-  bytes payload_bytes = 4 [json_name = "payload_bytes"];
-  string payload_string = 5 [json_name = "payload_string"];
+  bytes payload_blob = 4 [json_name = "payload_blob"];
+  string payload = 5 [json_name = "payload"];
 }
 
 message RPCReply {
   messageloop.shared.v1.Error error = 1;
-  bytes payload_bytes = 2 [json_name = "payload_bytes"];
-  string payload_string = 3 [json_name = "payload_string"];
+  bytes payload_blob = 2 [json_name = "payload_blob"];
+  string payload = 3 [json_name = "payload"];
 }
 
 message Message {
   string id = 1;
   string channel = 2;
   uint64 offset = 3;
-  bytes payload_bytes = 4 [json_name = "payload_bytes"];
-  string payload_string = 5 [json_name = "payload_string"];
+  bytes payload_blob = 4 [json_name = "payload_blob"];
+  string payload = 5 [json_name = "payload"];
 }
 
 message Publication {
@@ -116,8 +116,8 @@ message Pong {
 
 message Publish {
   string channel = 1;
-  bytes payload_bytes = 2 [json_name = "payload_bytes"];
-  string payload_string = 3 [json_name = "payload_string"];
+  bytes payload_blob = 2 [json_name = "payload_blob"];
+  string payload = 3 [json_name = "payload"];
 }
 
 message PublishAck {
