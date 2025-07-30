@@ -6,5 +6,5 @@ option go_package = "github.com/deeplooplabs/messageloop-protocol/gen/proto/go/e
 
 message PublishEvent {
   string channel = 1;
-  bytes payload = 2;
+  bytes payload_text = 2;
 }

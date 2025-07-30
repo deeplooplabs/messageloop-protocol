@@ -25,7 +25,7 @@ message Publication {
   Destination destination = 2;
   Options options = 3;
   bytes payload_blob = 4;
-  string payload = 5;
+  string payload_text = 5;
 }
 
 message PublishRequest {

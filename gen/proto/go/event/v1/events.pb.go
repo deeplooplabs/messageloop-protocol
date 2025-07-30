@@ -24,7 +24,7 @@ const (
 type PublishEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Channel       string                 `protobuf:"bytes,1,opt,name=channel,proto3" json:"channel,omitempty"`
-	Payload       []byte                 `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+	PayloadText   []byte                 `protobuf:"bytes,2,opt,name=payload_text,json=payloadText,proto3" json:"payload_text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -66,9 +66,9 @@ func (x *PublishEvent) GetChannel() string {
 	return ""
 }
 
-func (x *PublishEvent) GetPayload() []byte {
+func (x *PublishEvent) GetPayloadText() []byte {
 	if x != nil {
-		return x.Payload
+		return x.PayloadText
 	}
 	return nil
 }
@@ -77,10 +77,10 @@ var File_event_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"\x15event/v1/events.proto\x12\x14messageloop.event.v1\"B\n" +
+	"\x15event/v1/events.proto\x12\x14messageloop.event.v1\"K\n" +
 	"\fPublishEvent\x12\x18\n" +
-	"\achannel\x18\x01 \x01(\tR\achannel\x12\x18\n" +
-	"\apayload\x18\x02 \x01(\fR\apayloadB\xe5\x01\n" +
+	"\achannel\x18\x01 \x01(\tR\achannel\x12!\n" +
+	"\fpayload_text\x18\x02 \x01(\fR\vpayloadTextB\xe5\x01\n" +
 	"\x18com.messageloop.event.v1B\vEventsProtoP\x01ZJgithub.com/deeplooplabs/messageloop-protocol/gen/proto/go/event/v1;eventv1\xa2\x02\x03MEX\xaa\x02\x14Messageloop.Event.V1\xca\x02\x14Messageloop\\Event\\V1\xe2\x02 Messageloop\\Event\\V1\\GPBMetadata\xea\x02\x16Messageloop::Event::V1b\x06proto3"
 
 var (

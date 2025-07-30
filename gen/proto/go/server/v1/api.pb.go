@@ -27,7 +27,7 @@ type Publication struct {
 	Destination   *Publication_Destination `protobuf:"bytes,2,opt,name=destination,proto3" json:"destination,omitempty"`
 	Options       *Publication_Options     `protobuf:"bytes,3,opt,name=options,proto3" json:"options,omitempty"`
 	PayloadBlob   []byte                   `protobuf:"bytes,4,opt,name=payload_blob,json=payloadBlob,proto3" json:"payload_blob,omitempty"`
-	Payload       string                   `protobuf:"bytes,5,opt,name=payload,proto3" json:"payload,omitempty"`
+	PayloadText   string                   `protobuf:"bytes,5,opt,name=payload_text,json=payloadText,proto3" json:"payload_text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,9 +90,9 @@ func (x *Publication) GetPayloadBlob() []byte {
 	return nil
 }
 
-func (x *Publication) GetPayload() string {
+func (x *Publication) GetPayloadText() string {
 	if x != nil {
-		return x.Payload
+		return x.PayloadText
 	}
 	return ""
 }
@@ -509,13 +509,13 @@ var File_server_v1_api_proto protoreflect.FileDescriptor
 
 const file_server_v1_api_proto_rawDesc = "" +
 	"\n" +
-	"\x13server/v1/api.proto\x12\x15messageloop.server.v1\"\xe5\x02\n" +
+	"\x13server/v1/api.proto\x12\x15messageloop.server.v1\"\xee\x02\n" +
 	"\vPublication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12P\n" +
 	"\vdestination\x18\x02 \x01(\v2..messageloop.server.v1.Publication.DestinationR\vdestination\x12D\n" +
 	"\aoptions\x18\x03 \x01(\v2*.messageloop.server.v1.Publication.OptionsR\aoptions\x12!\n" +
-	"\fpayload_blob\x18\x04 \x01(\fR\vpayloadBlob\x12\x18\n" +
-	"\apayload\x18\x05 \x01(\tR\apayload\x1a*\n" +
+	"\fpayload_blob\x18\x04 \x01(\fR\vpayloadBlob\x12!\n" +
+	"\fpayload_text\x18\x05 \x01(\tR\vpayloadText\x1a*\n" +
 	"\aOptions\x12\x1f\n" +
 	"\vadd_history\x18\x01 \x01(\bR\n" +
 	"addHistory\x1aE\n" +

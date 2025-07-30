@@ -29,14 +29,14 @@ message RPCRequest {
   string channel = 2;
   string method = 3;
   bytes payload_blob = 5;
-  string payload = 6;
+  string payload_text = 6;
 }
 
 message RPCReply {
   string id = 1;
   shared.v1.Error error = 2;
   bytes payload_blob = 3;
-  string payload = 4;
+  string payload_text = 4;
 }
 
 message AuthenticateRequest {

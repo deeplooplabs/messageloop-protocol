@@ -28,7 +28,7 @@ type RPCRequest struct {
 	Channel       string                 `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
 	Method        string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
 	PayloadBlob   []byte                 `protobuf:"bytes,5,opt,name=payload_blob,json=payloadBlob,proto3" json:"payload_blob,omitempty"`
-	Payload       string                 `protobuf:"bytes,6,opt,name=payload,proto3" json:"payload,omitempty"`
+	PayloadText   string                 `protobuf:"bytes,6,opt,name=payload_text,json=payloadText,proto3" json:"payload_text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -91,9 +91,9 @@ func (x *RPCRequest) GetPayloadBlob() []byte {
 	return nil
 }
 
-func (x *RPCRequest) GetPayload() string {
+func (x *RPCRequest) GetPayloadText() string {
 	if x != nil {
-		return x.Payload
+		return x.PayloadText
 	}
 	return ""
 }
@@ -103,7 +103,7 @@ type RPCReply struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Error         *v1.Error              `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	PayloadBlob   []byte                 `protobuf:"bytes,3,opt,name=payload_blob,json=payloadBlob,proto3" json:"payload_blob,omitempty"`
-	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
+	PayloadText   string                 `protobuf:"bytes,4,opt,name=payload_text,json=payloadText,proto3" json:"payload_text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -159,9 +159,9 @@ func (x *RPCReply) GetPayloadBlob() []byte {
 	return nil
 }
 
-func (x *RPCReply) GetPayload() string {
+func (x *RPCReply) GetPayloadText() string {
 	if x != nil {
-		return x.Payload
+		return x.PayloadText
 	}
 	return ""
 }
@@ -774,19 +774,19 @@ var File_proxy_v1_proxy_proto protoreflect.FileDescriptor
 
 const file_proxy_v1_proxy_proto_rawDesc = "" +
 	"\n" +
-	"\x14proxy/v1/proxy.proto\x12\x14messageloop.proxy.v1\x1a\x16shared/v1/errors.proto\"\x8b\x01\n" +
+	"\x14proxy/v1/proxy.proto\x12\x14messageloop.proxy.v1\x1a\x16shared/v1/errors.proto\"\x94\x01\n" +
 	"\n" +
 	"RPCRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\achannel\x18\x02 \x01(\tR\achannel\x12\x16\n" +
 	"\x06method\x18\x03 \x01(\tR\x06method\x12!\n" +
-	"\fpayload_blob\x18\x05 \x01(\fR\vpayloadBlob\x12\x18\n" +
-	"\apayload\x18\x06 \x01(\tR\apayload\"\x8b\x01\n" +
+	"\fpayload_blob\x18\x05 \x01(\fR\vpayloadBlob\x12!\n" +
+	"\fpayload_text\x18\x06 \x01(\tR\vpayloadText\"\x94\x01\n" +
 	"\bRPCReply\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x122\n" +
 	"\x05error\x18\x02 \x01(\v2\x1c.messageloop.shared.v1.ErrorR\x05error\x12!\n" +
-	"\fpayload_blob\x18\x03 \x01(\fR\vpayloadBlob\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\tR\apayload\"\x8b\x01\n" +
+	"\fpayload_blob\x18\x03 \x01(\fR\vpayloadBlob\x12!\n" +
+	"\fpayload_text\x18\x04 \x01(\tR\vpayloadText\"\x8b\x01\n" +
 	"\x13AuthenticateRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1f\n" +
